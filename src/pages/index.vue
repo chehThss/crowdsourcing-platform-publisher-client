@@ -38,7 +38,6 @@
 </style>
 <template>
   <div class="layout">
-    <app-header></app-header>
     <div class="layout-copy">
       2017 &copy; 云菜包
     </div>

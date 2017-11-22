@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <login-dialog></login-dialog>
+    <app-header></app-header>
     <router-view/>
   </div>
 </template>
