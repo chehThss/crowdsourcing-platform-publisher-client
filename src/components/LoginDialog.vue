@@ -6,10 +6,9 @@
   }
 </style>
 <template>
-  <Button @click="modal10 = true">Vertical center</Button>
   <Modal
     title="Title"
-    v-model="modal10"
+    v-model="visiable"
     class-name="vertical-center-modal">
     <p>Content of dialog</p>
     <p>Content of dialog</p>
@@ -20,7 +19,22 @@
   export default {
     data () {
       return {
-        modal10: false,
+        email: undefined,
+        password: undefined,
+        emailError: null,
+        passwordError: null
+      }
+    },
+    computed: {
+      visiable: {
+        get() {
+          console.log('here')
+          console.log(this.$store);
+          return this.$store.state.appshell.loginDialog;
+        },
+        set(value) {
+          this.$store.commit('loginDialogSet', value);
+        }
       }
     }
   }

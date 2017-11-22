@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <login-dialog></login-dialog>
     <router-view/>
   </div>
 </template>
