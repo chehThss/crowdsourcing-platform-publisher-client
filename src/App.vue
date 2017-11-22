@@ -3,6 +3,7 @@
     <login-dialog></login-dialog>
     <app-header></app-header>
     <router-view/>
+    <app-copy></app-copy>
   </div>
 </template>
 
