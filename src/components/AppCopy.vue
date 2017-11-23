@@ -1,6 +1,6 @@
 <template>
   <div class="layout-copy">
-    2017 &copy; 云菜包
+    2017 &copy; 云众包
   </div>
 </template>
 

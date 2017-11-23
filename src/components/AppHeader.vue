@@ -1,11 +1,11 @@
 <template>
   <div>
     <Menu mode="horizontal" theme="light" class="app-header">
-      <MenuItem name="1">云菜包</MenuItem>
+      <MenuItem name="1">云众包</MenuItem>
       <MenuItem name="2" class="search-box">
         <Input v-model="serachContent" icon="ios-search-strong" placeholder="搜索任务"></Input>
       </MenuItem>
-      <MenuItem name="3">
+      <MenuItem to="/" name="3">
         <Icon type="home"></Icon>
         首页
       </MenuItem>
@@ -42,7 +42,7 @@
 
 <style lang="less">
   .app-header{
-    min-width: 1000px;
+    min-width: 800px;
   }
 
   .search-box{
