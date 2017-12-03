@@ -12,6 +12,7 @@
     :closable="false"
     :mask-closable="true"
     @on-cancel="handleCancel"
+    :width="400"
   >
     <p slot="header" style="font-size: 18px; text-align: center">
       云众包
@@ -79,7 +80,7 @@
       handleRegister () {
         this.$refs.formValidate.resetFields();
         this.visible = false;
-        this.$router.push('/register');
+        this.$router.push({name: 'register'});
       }
     }
   }

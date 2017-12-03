@@ -5,25 +5,29 @@
       云众包
       </Col>
       <Col span="8"  class="search-box">
-      <Input v-model="serachContent" icon="ios-search-strong" placeholder="搜索任务"></Input>
+      <Input v-model="searchContent" icon="ios-search-strong" placeholder="搜索任务"></Input>
       </Col>
       <Col span="12">
-        <Menu mode="horizontal" theme="light">
-          <MenuItem to="/" name="3">
+        <Col span="18" class="nav">
+        <Menu mode="horizontal"
+              theme="light"
+              ref="nav"
+              @on-select="navigationSelected"
+              active-name="home">
+          <MenuItem to="/" name="home">
             <Icon type="home"></Icon>
             首页
           </MenuItem>
-          <MenuItem v-if="user" name="4">
+          <MenuItem v-if="user" name="manage-task">
             <Icon type="ios-list-outline"></Icon>
             管理任务
           </MenuItem>
-          <MenuItem v-if="user" name="5.1" class="user-center">
-            <Icon type="person" class="user-icon"></Icon>
-          </MenuItem>
-          <MenuItem v-else name="5.2" class="login-button" @click.native="loginButtonClicked">
-            <Icon type="person" class="user-icon"></Icon>
-            登录
-          </MenuItem>
+        </Menu>
+        </Col>
+        <Col span="6" class="nav-user">
+          <Button v-if="user" type="text" icon="ios-person"></Button>
+          <Button size="large" v-else type="text" icon="ios-person" @click="loginButtonClicked">登录</Button>
+        </Col>
         </Menu>
       </Col>
     </Row>
@@ -35,12 +39,20 @@
     data() {
       return {
         searchContent: '',
-        user: 'dfsljal',
+        user: '',
       }
     },
     methods: {
       loginButtonClicked() {
         this.$store.commit('loginDialogSet', true);
+      },
+      navigationSelected(name) {
+        switch(name){
+          case 'home':
+            this.$router.push({name: 'home'});
+            break;
+          default:
+        }
       }
     }
   }
@@ -56,11 +68,11 @@
   .app-header::after {
     display: block;
     height: 1px;
-    width:100%;
     background: #dddee1;
     visibility: visible;
     position: relative;
     top: -1px;
+    width: 100%;
   }
 
   .logo{
@@ -71,7 +83,7 @@
     line-height: @header-height;
   }
   .header-content{
-    width: 800px;
+    max-width: 1024px;
     margin: auto;
   }
 
@@ -81,8 +93,10 @@
     padding-right: 10px;
   }
 
-  .user-center, .login-button{
-    float: right !important;
+  .nav-user {
+    right: 0;
+    height: @header-height;
+    line-height: @header-height;
   }
 
   .user-icon{

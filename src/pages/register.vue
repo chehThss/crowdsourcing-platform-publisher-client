@@ -1,17 +1,21 @@
 <template>
   <div class="register-page">
     <h2 class="register-title">发布者注册</h2>
-    <Form class="register-form" ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
-      <FormItem prop="user" label="用户名: ">
-        <Input type="text" v-model="formValidate.user" placeholder=""></Input>
+    <Form class="register-form"
+          ref="formValidate"
+          :model="formValidate"
+          :rules="ruleValidate"
+          :label-width="80">
+      <FormItem prop="user" label="用户名：">
+        <Input type="text" v-model="formValidate.user" placeholder="" autofocus></Input>
       </FormItem>
-      <FormItem prop="email" label="邮箱: ">
+      <FormItem prop="email" label="邮箱：">
         <Input type="text" v-model="formValidate.email" placeholder=""></Input>
       </FormItem>
-      <FormItem prop="password" label="密码: ">
+      <FormItem prop="password" label="密码：">
         <Input type="password" v-model="formValidate.password" placeholder=""></Input>
       </FormItem>
-      <FormItem prop="passwordCheck" label="确认密码: ">
+      <FormItem prop="passwordCheck" label="确认密码：">
         <Input type="password" v-model="formValidate.passwordCheck"></Input>
       </FormItem>
       <FormItem class="register-form-button">
@@ -40,7 +44,7 @@
       const validatePassCheck = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'));
-        } else if (value != this.formValidate.password) {
+        } else if (value !== this.formValidate.password) {
           callback(new Error('输入密码不一致'));
         } else {
           callback();
@@ -77,7 +81,7 @@
         this.$refs.formValidate.validate((valid) => {
           if (valid) {
             this.$refs.formValidate.resetFields();
-            this.$router.push('/');
+            this.$router.push({name: 'home'});
           }
         })
       }
@@ -87,10 +91,8 @@
 
 <style lang="less">
   .register-page {
-    width: 1000px;
     margin: auto;
-    padding: 40px 30px;
-    background-color: #fafafa;
+    padding: 20px 30px;
   }
   .register-title {
     text-align: left;

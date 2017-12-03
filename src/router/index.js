@@ -2,21 +2,28 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/index'
 import Register from '@/pages/register'
+import TaskSubmit from '@/pages/task_submit'
 import iView from 'iview'
 
 Vue.use(Router);
 
 let router = new Router({
+  mode: 'history',
   routes: [
     {
-      path: '/(index.html)?',
-      name: 'Home',
+      path: '/admin/(index.html)?',
+      name: 'home',
       component: Home
     },
     {
-      path: '/register',
-      name: 'Register',
+      path: '/admin/register',
+      name: 'register',
       component: Register
+    },
+    {
+      path: '/admin/submit',
+      name: 'submit',
+      component: TaskSubmit
     }
   ]
 });
