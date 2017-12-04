@@ -262,7 +262,8 @@
   }
 
   .description-preview {
-    background-color: #eeeeee;
+    border: solid 1px #dddee1;
+    border-radius: 4px;
     overflow-y: auto;
     margin-left: 10px;
     padding: 0 5px;
