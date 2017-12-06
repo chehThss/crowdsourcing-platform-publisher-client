@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/pages/index'
+import Home from '@/pages/home'
 import Register from '@/pages/register'
 import TaskSubmit from '@/pages/task_submit'
 import iView from 'iview'

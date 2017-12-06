@@ -161,10 +161,9 @@
             this.formSubmit.tags.push(this.tagInput);
             this.tagInput = '';
           } else {
-            this.$Notice.warning({
-              title: '已经包含该标签',
+            this.$Message.warning({
+              content: '已经包含该标签',
               duration: 1.5,
-              top: 150
             })
           }
         }
@@ -186,6 +185,20 @@
       handleSubmit() {
         // TODO: submit task
         console.log("TODO: submit task")
+        // Submit successfully
+        if(true) {
+          this.$Message.success({
+            content: "任务提交成功，请等待审核",
+            duration: 5,
+            onClose: () => { this.$router.push({name: "home"}) },
+            closeable: true
+          })
+        } else {
+          this.$Message.error({
+            content: "提交失败",
+            duration: 5
+          })
+        }
       }
     },
   }
