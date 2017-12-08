@@ -39,12 +39,16 @@
     data() {
       return {
         searchContent: '',
-        user: '',
+      }
+    },
+    computed: {
+      user() {
+        return this.$store.getters['auth/user'];
       }
     },
     methods: {
       loginButtonClicked() {
-        this.$store.commit('loginDialogSet', true);
+        this.$store.commit('appshell/loginDialogSet', true);
       },
       navigationSelected(name) {
         switch(name){

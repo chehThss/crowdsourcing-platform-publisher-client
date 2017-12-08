@@ -18,40 +18,49 @@
       云众包
     </p>
     <div>
-      <Form ref="formValidate" :model="formValidate" :rules="ruleValidate">
-        <FormItem prop="user">
+      <Form ref="formValidate">
+        <FormItem :error="usernameError">
           <p>用户名或邮箱</p>
-          <Input type="text" v-model="formValidate.user" placeholder=""></Input>
+          <Input type="text" v-model="username" placeholder=""></Input>
         </FormItem>
-        <FormItem prop="password">
+        <FormItem :error="passwordError">
           <p>密码</p>
-          <Input type="password" v-model="formValidate.password" placeholder=""></Input>
+          <Input type="password" v-model="password" placeholder="" @on-enter="handleLogin"></Input>
         </FormItem>
       </Form>
       <a @click="handleRegister">注册账号</a>
     </div>
     <div slot="footer">
-      <Button type="primary" @click="handleSubmit">登录</Button>
+      <Button type="primary" @click="handleLogin">登录</Button>
       <Button type="ghost" @click="handleCancel">取消</Button>
     </div>
   </Modal>
 </template>
+
 <script>
+  const usernameRegex = /^((([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})|[a-z_0-9]+)$/i;
   export default {
     data () {
       return {
-        formValidate: {
-          user: '',
-          password: ''
-        },
-        ruleValidate: {
-          user: [
-            { required: true, message: '请输入用户名', trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '请输入密码', trigger: 'blur'}
-          ]
-        }
+        username: '',
+        password: '',
+        usernameError: '',
+        passwordError: ''
+      }
+    },
+    watch: {
+      username: function () {
+        if(this.visible)
+          this.checkUsername();
+      },
+      password: function () {
+        if(this.visible)
+          this.checkPassword();
+      },
+      visible: function () {
+        this.username = '';
+        this.password = '';
+        this.resetError();
       }
     },
     computed: {
@@ -60,25 +69,80 @@
           return this.$store.state.appshell.loginDialog;
         },
         set(value) {
-          this.$store.commit('loginDialogSet', value);
+          this.$store.commit('appshell/loginDialogSet', value);
         }
-      }
+      },
+      formValid: () => { return !this.usernameError && !this.passwordError }
     },
     methods: {
-      handleSubmit () {
-        this.$refs.formValidate.validate((valid) => {
-          if (valid) {
-            this.$refs.formValidate.resetFields();
-            this.visible = false;
+      checkUsername() {
+        if(this.username.length === 0)
+          this.usernameError = '用户名不能为空';
+        else if(!usernameRegex.test(this.username))
+          this.usernameError = '非法的用户名或邮箱';
+        else
+          this.usernameError = '';
+      },
+      checkPassword(){
+        if (this.password.length === 0)
+          this.passwordError = '密码不能为空';
+        else if (this.password.length < 8)
+          this.passwordError = '密码长度至少8位';
+        else
+          this.passwordError = '';
+      },
+      resetError(){
+        this.usernameError = '';
+        this.passwordError = '';
+      },
+      handleLogin() {
+        this.checkUsername();
+        this.checkPassword();
+        if(this.formValid === false)
+          return;
+        const data = {payload: {password: this.password}};
+        if (this.username.indexOf('@') === -1) {
+          // Username
+          data.strategy = 'username';
+          data.payload.username = this.username;
+        } else {
+          // Email
+          data.strategy = 'email';
+          data.payload.email = this.username;
+        }
+        this.$store.dispatch('auth/authAndGetUser', data).then(result => {
+          this.$Message.success(
+            {
+              content: '登录成功',
+              duration: 0.5,
+              onClose: () => {
+                this.visible = false;
+                this.$router.push({name: 'home'})},
+            },
+          )
+        }).catch(error => {
+          switch (error.message) {
+            case 'User does not exist':
+              this.usernameError = '用户不存在';
+              break;
+            case 'Wrong password':
+              this.passwordError = '密码错误';
+              break;
+            default:
+              console.error(error);
+              this.$Message.error(
+                {
+                  content: error,
+                  duration: 2
+                },
+              );
           }
-        })
+        });
       },
       handleCancel () {
-        this.$refs.formValidate.resetFields();
         this.visible = false;
       },
       handleRegister () {
-        this.$refs.formValidate.resetFields();
         this.visible = false;
         this.$router.push({name: 'register'});
       }

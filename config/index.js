@@ -4,13 +4,23 @@
 
 const path = require('path')
 
+const proxyOption = {
+  target: 'http://localhost:41682',
+  ws: true,
+  changeOrigin: true
+};
+
 module.exports = {
   dev: {
 
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/admin',
-    proxyTable: {},
+    proxyTable: {
+      '/api': proxyOption,
+      '/uploads': proxyOption,
+      '/socket.io': proxyOption
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

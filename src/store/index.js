@@ -1,11 +1,19 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 import appshell from './appshell';
+import global from './global';
+import auth from './auth';
+import user from './user';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   modules: {
-    appshell
+    appshell,
+    global,
+    auth,
+    user
   }
 });
+
+export default store;

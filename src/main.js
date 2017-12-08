@@ -15,10 +15,22 @@ Vue.use(iView);
 Object.keys(components).forEach(x => Vue.component(x, components[x]));
 
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
+let app = new Vue({
   router,
   store,
+  data: {
+    title: '云众包',
+  },
   template: '<App/>',
-  components: { App }
+  mounted() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt)
+      store.dispatch('auth/authAndGetUser', {strategy: 'jwt', payload: {jwt}}).catch(err => {
+        console.error(err);
+      });
+  },
+  mixins: [App]
 });
+
+store.commit('global/setSite', store.state.global.site);
+router.onReady(() => app.$mount('#app'));
