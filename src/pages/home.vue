@@ -1,6 +1,6 @@
 <template>
   <div class="home-body">
-    <Row style="padding: 20px">
+    <Row v-if="user" style="padding: 20px">
       <Col span="6">
         <profile-card class="profile"></profile-card>
       </Col>
@@ -23,7 +23,10 @@
 </template>
 
 <script>
+  import User from '../components/User.vue'
+
   export default {
+    mixins: [User],
     data() {
       return {
         taskType: '',

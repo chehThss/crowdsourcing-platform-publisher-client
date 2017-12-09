@@ -1,32 +1,27 @@
 <template>
   <div>
-    <img class="avatar" :src="avatarUrl">
+    <img class="avatar" :src="avatar">
     <div class="username">{{user.username}}</div>
   </div>
 </template>
 
 <script>
+  import User from '../components/User.vue';
+
   export default {
+    mixins: [User],
     data () {
       return {
-        user: ''
       }
     },
     computed: {
-      avatarUrl() {
-        if(this.user.avatar) {
-          return this.user.avatar;
-        } else {
-          return '/static/img/default_avatar.jpeg';
-        }
-      },
     }
   }
 </script>
 
 <style lang="less">
   .avatar {
-    width: 100%;
+    width: 90%;
     border-radius: 16px;
     border-style: none;
     margin-bottom: 20px;

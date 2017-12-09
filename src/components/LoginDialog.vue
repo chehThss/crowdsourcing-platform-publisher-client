@@ -21,11 +21,11 @@
       <Form ref="formValidate">
         <FormItem :error="usernameError">
           <p>用户名或邮箱</p>
-          <Input type="text" v-model="username" placeholder=""></Input>
+          <Input ref="usernameInput" type="text" v-model="username" placeholder=""></Input>
         </FormItem>
         <FormItem :error="passwordError">
           <p>密码</p>
-          <Input type="password" v-model="password" placeholder="" @on-enter="handleLogin"></Input>
+          <Input ref="passwordInput" type="password" v-model="password" placeholder="" @on-enter="handleLogin"></Input>
         </FormItem>
       </Form>
       <a @click="handleRegister">注册账号</a>
@@ -111,22 +111,27 @@
           data.payload.email = this.username;
         }
         this.$store.dispatch('auth/authAndGetUser', data).then(result => {
+          this.visible = false;
+          this.$router.push({name: 'home'});
           this.$Message.success(
             {
               content: '登录成功',
-              duration: 0.5,
-              onClose: () => {
-                this.visible = false;
-                this.$router.push({name: 'home'})},
+              duration: 1,
             },
           )
         }).catch(error => {
           switch (error.message) {
             case 'User does not exist':
               this.usernameError = '用户不存在';
+              this.$refs.usernameInput.focus();
               break;
             case 'Wrong password':
               this.passwordError = '密码错误';
+              this.$refs.passwordInput.focus();
+              break;
+            case 'Permission denied':
+              this.usernameError = '用户无权限访问该页面';
+              this.$refs.usernameInput.focus();
               break;
             default:
               console.error(error);

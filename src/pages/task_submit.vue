@@ -39,7 +39,7 @@
         </div>
       </FormItem>
       <FormItem label="发布者：">
-        <p style="text-align: left">{{publisherName}}</p>
+        <p style="text-align: left">{{user.username}}</p>
       </FormItem>
       <FormItem label="标签：">
         <Tag
@@ -89,10 +89,12 @@
 </template>
 
 <script>
+  import User from '../components/User.vue'
   import debounce from 'lodash/debounce.js'
   import marked from 'marked'
 
   export default {
+    mixins: [User],
     data() {
       const validateTitle = (rule, value, callback) => {
         if (!this.formSubmit.title) {
@@ -126,10 +128,6 @@
     computed: {
       backgroundImageURL(){
         return 'url("' + this.imagePreviewURL + '")';
-      },
-      publisherName(){
-        // TODO: get username
-        return 'chehang';
       },
       compiledDescription() {
         return marked(this.taskDescription)

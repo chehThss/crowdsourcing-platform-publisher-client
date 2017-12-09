@@ -25,25 +25,28 @@
         </Menu>
         </Col>
         <Col span="6" class="nav-user">
-          <Button v-if="user" type="text" icon="ios-person"></Button>
+          <Dropdown v-if="user" class="user-menu">
+            <Avatar :src="avatarThumbnail" class="user-avatar"></Avatar>
+            <DropdownMenu slot="list">
+              <DropdownItem @click.native="">个人中心</DropdownItem>
+              <DropdownItem @click.native="onLogout">登出</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
           <Button size="large" v-else type="text" icon="ios-person" @click="loginButtonClicked">登录</Button>
         </Col>
-        </Menu>
       </Col>
     </Row>
   </Row>
 </template>
 
 <script>
+  import User from '../components/User.vue';
+
   export default {
+    mixins: [User],
     data() {
       return {
         searchContent: '',
-      }
-    },
-    computed: {
-      user() {
-        return this.$store.getters['auth/user'];
       }
     },
     methods: {
@@ -57,6 +60,11 @@
             break;
           default:
         }
+      },
+      onLogout() {
+        this.$store.commit('auth/updateToken');
+        this.$Message.info('退出登录');
+        this.$router.push({name: 'home'});
       }
     }
   }
@@ -97,10 +105,23 @@
     padding-right: 10px;
   }
 
+  .nav-user, .user-menu div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .nav-user {
-    right: 0;
     height: @header-height;
-    line-height: @header-height;
+  }
+
+  @avatar-width: 40px;
+
+  .user-avatar {
+    width: @avatar-width;
+    height: @avatar-width;
+    cursor: pointer;
+    border-radius: 50%;
   }
 
   .user-icon{

@@ -5,6 +5,8 @@ const state = {
   token: null
 };
 
+const AllowedUserRoles = ['PUBLISHER', 'TASK_ADMIN', 'USER_ADMIN', 'SITE_ADMIN'];
+
 const mutations = {
   updateToken(state, token) {
     if (token) {
@@ -26,7 +28,14 @@ const actions = {
   async authAndGetUser({dispatch, state}, data) {
     return dispatch('auth', data).then(() =>
       dispatch('user/get', state.token.uid, {root: true})
-    );
+    ).then((user) => {
+      if(user.roles.filter(item => AllowedUserRoles.includes(item)).length === 0){
+        let err = new Error('Permission denied');
+        this.commit('auth/updateToken');
+        throw err;
+      }
+      return user;
+    })
   }
 };
 
