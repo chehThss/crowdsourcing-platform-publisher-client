@@ -5,6 +5,8 @@ const state = {
   users: {}
 };
 
+const AllowedUserRoles = ['PUBLISHER', 'TASK_ADMIN', 'USER_ADMIN', 'SITE_ADMIN'];
+
 const mutations = {
   updateUser(state, user) {
     if (typeof user.createdAt === 'string')
@@ -27,6 +29,10 @@ const actions = {
     const jwt = window.localStorage.getItem('jwt');
     headers.Authorization = 'Bearer ' + jwt;
     const response = await throwOnError(axios().get('/api/user/' + id, {headers}));
+    if(response.roles.filter(item => AllowedUserRoles.includes(item)).length === 0){
+      let err = new Error('Permission denied');
+      throw err;
+    }
     commit('updateUser', response);
     return response;
   }
