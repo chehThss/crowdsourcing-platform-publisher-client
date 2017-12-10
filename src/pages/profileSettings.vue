@@ -44,10 +44,14 @@
         this.$store.dispatch('user/patch', {
           id: this.user._id,
           avatar: file
+        }).then(() => {
+          uploadMsg();
         }).catch(err => {
+          uploadMsg();
+          this.$Message.success('上传成功');
           console.error(err);
           this.$store.commit('appshell/addSnackbarMessage', err.message);
-        }).then(uploadMsg());
+        });
         return false;
       }
     }
