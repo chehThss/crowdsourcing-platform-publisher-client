@@ -6,6 +6,8 @@ import TaskSubmit from '@/pages/task_submit'
 import PersonalCenter from '@/pages/personalCenter'
 import ProfileSettings from '@/pages/profileSettings'
 import PasswordSet from '@/pages/passwordSet'
+import ForgetPassword from '@/pages/forgetPassword'
+import ResetPassword from '@/pages/resetPassword'
 import iView from 'iview'
 
 Vue.use(Router);
@@ -47,6 +49,16 @@ let router = new Router({
           component: PasswordSet,
         },
       ]
+    },
+    {
+      path: '/admin/forget-password',
+      name: 'forgetPassword',
+      component: ForgetPassword,
+    },
+    {
+      path: '/admin/reset-password',
+      name: 'resetPassword',
+      component: ResetPassword,
     }
   ]
 });

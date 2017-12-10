@@ -4,7 +4,7 @@
     <Form class="register-form"
           ref="formValidate"
           :label-width="80">
-      <FormItem :error="formRegister.email.error" prop="email" label="邮箱：">
+      <FormItem :error="formRegister.email.error" label="邮箱：">
         <Input type="text" v-model="formRegister.email.content" placeholder="" autofocus></Input>
       </FormItem>
       <FormItem :error="formRegister.username.error" label="用户名：">
