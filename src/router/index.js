@@ -5,7 +5,7 @@ import Register from '@/pages/register'
 import TaskSubmit from '@/pages/task_submit'
 import PersonalCenter from '@/pages/personalCenter'
 import ProfileSettings from '@/pages/profileSettings'
-import PasswordReset from '@/pages/passwordReset'
+import PasswordSet from '@/pages/passwordSet'
 import iView from 'iview'
 
 Vue.use(Router);
@@ -43,8 +43,8 @@ let router = new Router({
         },
         {
           path: 'password',
-          name: 'passwordReset',
-          component: PasswordReset,
+          name: 'passwordSet',
+          component: PasswordSet,
         },
       ]
     }

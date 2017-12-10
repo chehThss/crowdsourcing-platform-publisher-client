@@ -5,7 +5,7 @@
         <Icon type="information"></Icon>
         个人信息
       </MenuItem>
-      <MenuItem name="passwordReset">
+      <MenuItem name="passwordSet">
         <Icon type="key"></Icon>
         修改密码
       </MenuItem>
