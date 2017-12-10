@@ -21,7 +21,11 @@
           <Input ref="passwordInput" type="password" v-model="password" placeholder="" @on-enter="handleLogin"></Input>
         </FormItem>
       </Form>
-      <a @click="handleRegister">注册账号</a>
+      <div style="position: relative">
+        <a @click="handleRegister">注册账号</a>
+        <a style="position: absolute; right: 0;"
+           @click="$router.push({name: 'forgetPassword'});">忘记密码</a>
+      </div>
     </div>
     <div slot="footer">
       <Button type="primary" @click="handleLogin">登录</Button>
