@@ -2,8 +2,12 @@
   <div>
     <h1 style="padding-bottom: 20px">修改密码</h1>
     <Form :label-width="80" style="width: 400px">
+      <FormItem label="原密码：" :error="passwordForm.oldPassword.error">
+        <Input type="password" v-model="passwordForm.oldPassword.content" autofocus></Input>
+        <a @click="handleForgetPassword">忘记密码?</a>
+      </FormItem>
       <FormItem label="新密码：" :error="passwordForm.newPassword.error">
-        <Input type="password" v-model="passwordForm.newPassword.content" autofocus></Input>
+        <Input type="password" v-model="passwordForm.newPassword.content"></Input>
       </FormItem>
       <FormItem label="确认密码：" :error="passwordForm.passwordCheck.error">
          <Input type="password" v-model="passwordForm.passwordCheck.content"></Input>
@@ -38,6 +42,14 @@
     data(){
       return {
         passwordForm: {
+          oldPassword: new FormItem(function () {
+            if(!this.content)
+              this.error = '密码不能为空';
+            else if(this.content.length < 8)
+              this.error = '密码长度至少8位';
+            else
+              this.error = '';
+          }),
           newPassword: new FormItem(function () {
             if(!this.content)
               this.error = '密码不能为空';
@@ -59,6 +71,9 @@
       }
     },
     watch: {
+      'passwordForm.oldPassword.content'() {
+        this.passwordForm.oldPassword.validate();
+      },
       'passwordForm.newPassword.content'() {
         this.passwordForm.newPassword.validate();
       },
@@ -70,51 +85,73 @@
     },
     computed: {
       valid() {
-        return !this.passwordForm.newPassword.error &&
+        return !this.passwordForm.oldPassword.error &&
+          !this.passwordForm.newPassword.error &&
           !this.passwordForm.passwordCheck.error;
       }
     },
     methods: {
       handleSubmit() {
         const username = this.user.username;
-        this.$store.dispatch('user/patch', {
-          id: this.user._id,
-          password: this.passwordForm.newPassword.content,
+        this.$store.dispatch('auth/auth', {
+          strategy: 'username',
+          payload: {
+            password: this.passwordForm.oldPassword.content,
+            username: username,
+          }
         }).then(() => {
-          this.$Message.success('更改密码成功');
-          const data = {
-            strategy: 'username',
-            payload: {
-              password: this.passwordForm.newPassword.content,
-              username: username,
-          }};
-          this.$store.dispatch('auth/authAndGetUser', data).catch(error => {
-            console.error(error);
-            this.$Message.error(
-              {
-                content: error,
-                duration: 2
-              },
-            );
+          this.$store.dispatch('user/patch', {
+            id: this.user._id,
+            password: this.passwordForm.newPassword.content,
+          }).then(() => {
+            this.$Message.success('更改密码成功');
+            const data = {
+              strategy: 'username',
+              payload: {
+                password: this.passwordForm.newPassword.content,
+                username: username,
+              }};
+            this.$store.dispatch('auth/authAndGetUser', data).catch(error => {
+              console.error(error);
+              this.$Message.error(
+                {
+                  content: error,
+                  duration: 2
+                },
+              );
+            });
+          }).catch(err => {
+            console.error(err);
+            this.$Message.error(err.message);
           });
         }).catch(err => {
-          console.error(err);
-          this.$store.commit('appshell/addSnackbarMessage', err.message);
-        });
+          switch (err.message) {
+            case 'Wrong password':
+              this.passwordForm.oldPassword.error = '密码错误';
+              break;
+            default:
+              console.error(err);
+              this.$Message.error(err.message);
+          }
+        })
       },
-     handleSubmitButtonClicked() {
-       const formValidateArgs = {passwordCheck: {
-         password: this.passwordForm.newPassword.content
-       }};
-       for(let key in this.passwordForm) {
-         if(key) {
-           this.passwordForm[key].validate(formValidateArgs[key]);
-         }
-       }
-       if(!this.valid)
-         return;
-       this.showConfirmModal = true;
-     }
+      handleSubmitButtonClicked() {
+        const formValidateArgs = {passwordCheck: {
+          password: this.passwordForm.newPassword.content
+        }};
+        for(let key in this.passwordForm) {
+          if(key) {
+            this.passwordForm[key].validate(formValidateArgs[key]);
+          }
+        }
+        if(!this.valid)
+          return;
+        this.showConfirmModal = true;
+      },
+      handleForgetPassword() {
+        this.$store.commit('auth/updateToken');
+        this.$router.push({name: 'forgetPassword'});
+      }
     }
   }
 </script>

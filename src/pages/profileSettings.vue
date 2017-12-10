@@ -75,7 +75,7 @@
     margin-bottom: 20px;
   }
 
-  @profile-info-font-size: 20px;
+  @profile-info-font-size: 16px;
 
   .profile-info-label {
     width: 80px;
