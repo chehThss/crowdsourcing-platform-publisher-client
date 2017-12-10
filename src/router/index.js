@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Home from '@/pages/home'
 import Register from '@/pages/register'
 import TaskSubmit from '@/pages/task_submit'
+import PersonalCenter from '@/pages/personalCenter'
+import ProfileSettings from '@/pages/profileSettings'
 import iView from 'iview'
 
 Vue.use(Router);
@@ -24,6 +26,21 @@ let router = new Router({
       path: '/admin/submit',
       name: 'submit',
       component: TaskSubmit
+    },
+    {
+      path: '/admin/account',
+      component: PersonalCenter,
+      children: [
+        {
+          path: '',
+          redirect: {name: 'profileSettings'},
+        },
+        {
+          path: 'profile',
+          name: 'profileSettings',
+          component: ProfileSettings,
+        },
+      ]
     }
   ]
 });

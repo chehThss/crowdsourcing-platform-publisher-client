@@ -26,9 +26,9 @@
         </Col>
         <Col span="6" class="nav-user">
           <Dropdown v-if="user" class="user-menu">
-            <Avatar :src="avatarThumbnail" class="user-avatar"></Avatar>
+            <Avatar :src="avatarThumbnail" class="user-avatar-thumbnail"></Avatar>
             <DropdownMenu slot="list">
-              <DropdownItem @click.native="">个人中心</DropdownItem>
+              <DropdownItem @click.native="$router.push({name: 'profileSettings'})">个人中心</DropdownItem>
               <DropdownItem @click.native="onLogout">登出</DropdownItem>
             </DropdownMenu>
           </Dropdown>
@@ -105,7 +105,7 @@
     padding-right: 10px;
   }
 
-  .nav-user, .user-menu div {
+  .nav-user, .user-menu > div {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -117,7 +117,7 @@
 
   @avatar-width: 40px;
 
-  .user-avatar {
+  .user-avatar-thumbnail {
     width: @avatar-width;
     height: @avatar-width;
     cursor: pointer;

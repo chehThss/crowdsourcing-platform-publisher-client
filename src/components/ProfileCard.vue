@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <img class="avatar" :src="avatar">
+  <div v-if="user" class="profile-card">
+    <Avatar class="avatar" :src="avatar" shape="square"></Avatar>
     <div class="username">{{user.username}}</div>
   </div>
 </template>
@@ -20,10 +20,12 @@
 </script>
 
 <style lang="less">
+  .profile-card {
+    width: 240px;
+  }
   .avatar {
-    width: 90%;
-    border-radius: 16px;
-    border-style: none;
+    width: 220px;
+    height: 220px;
     margin-bottom: 20px;
   }
 

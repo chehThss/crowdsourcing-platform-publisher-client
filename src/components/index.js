@@ -2,6 +2,7 @@ import AppHeader from './AppHeader.vue';
 import LoginDialog from './LoginDialog.vue'
 import AppCopy from './AppCopy.vue'
 import ProfileCard from './ProfileCard.vue'
+import PersonalCenterMenu from './personalCenterMenu.vue'
 import User from './User.vue'
 
 export default {
@@ -10,4 +11,5 @@ export default {
   'app-copy': AppCopy,
   'profile-card': ProfileCard,
   'user': User,
+  'personal-center-menu': PersonalCenterMenu
 }

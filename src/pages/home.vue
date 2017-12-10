@@ -1,24 +1,25 @@
 <template>
   <div class="home-body">
-    <Row v-if="user" style="padding: 20px">
-      <Col span="6">
-        <profile-card class="profile"></profile-card>
-      </Col>
-      <Col span="18">
-      <div class="nav-home">
-        <Button type="text">我的任务</Button>
+    <div v-if="user" class="user-home">
+      <profile-card class="profile"></profile-card>
+      <div style="width: 100%;">
+        <div class="nav-home">
+          <Button type="text">我的任务</Button>
+        </div>
+        <div class="task-filter">
+          <Select v-model="taskType" class="task-type-select">
+            <Option v-for="item in taskTypeList"
+                    :value="item.value"
+                    :key="item.value">
+              {{item.label}}
+            </Option>
+          </Select>
+          <div>
+            <Button type="primary" icon="plus-round" @click="$router.push({ name: 'submit' })">新建任务</Button>
+          </div>
+        </div>
       </div>
-      <div class="task-filter">
-        <Select v-model="taskType">
-          <Option v-for="item in taskTypeList"
-                  :value="item.value"
-                  :key="item.value">
-            {{item.label}}
-          </Option>
-        </Select>
-      </div>
-      </Col>
-    </Row>
+    </div>
   </div>
 </template>
 
@@ -29,7 +30,7 @@
     mixins: [User],
     data() {
       return {
-        taskType: '',
+        taskType: 'all',
         taskTypeList: [
           { value: 'all', label: '全部' },
           { value: 'saved', label: '暂存' },
@@ -45,15 +46,30 @@
 
 <style lang="less">
   .home-body{
+    padding: 20px;
   }
+
+  .user-home {
+    display: flex;
+  }
+
   .profile {
     padding-right: 20px;
   }
-  .nav-home {
-    border-bottom: solid 1px #b4b4b4;
-    margin-bottom: 5px;
-  }
   .nav-home .ivu-btn {
     font-size: 16px;
+  }
+  .task-filter {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 5px;
+    border-top: solid 1px #b4b4b4;
+    border-bottom: solid 1px #b4b4b4;
+  }
+  .task-filter > div {
+    margin: 5px;
+  }
+  .task-type-select {
+    width: 25%;
   }
 </style>

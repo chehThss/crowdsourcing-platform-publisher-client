@@ -1,10 +1,3 @@
-<style lang="less">
-  .vertical-center-modal{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-</style>
 <template>
   <Modal
     v-model="visible"
@@ -154,3 +147,11 @@
     }
   }
 </script>
+
+<style lang="less">
+  .vertical-center-modal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>

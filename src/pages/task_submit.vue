@@ -1,5 +1,5 @@
 <template>
-  <div class="publish">
+  <div class="publish" v-if="user">
     <Steps :current="0" class="publish-progress">
       <Step title="待提交"></Step>
       <Step title="待审核"></Step>
