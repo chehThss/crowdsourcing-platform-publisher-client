@@ -23,11 +23,51 @@ let app = new Vue({
   },
   template: '<App/>',
   mounted() {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt)
-      store.dispatch('auth/authAndGetUser', {strategy: 'jwt', payload: {jwt}}).catch(err => {
-        console.error(err);
-      });
+    switch (this.$route.query.action) {
+      case 'create-user': {
+        const token = this.$route.query.token;
+        store.dispatch('user/confirmMail', {
+          id: token,
+          action: 'create-user'
+        }).then(() =>
+          this.$Message.success('用户创建成功，请重新登录！')
+        ).catch(err => {
+          switch (err.message) {
+            case 'Invalid token':
+              this.$Message.error('用户创建失败，无效的凭证！');
+              break;
+            case 'Username has been taken':
+              this.$Message.error('用户创建失败，用户名已被注册！');
+              break;
+            case 'Email has been taken':
+              this.$Message.error('用户创建失败，邮箱已被注册！');
+              break;
+            default:
+              console.error(err);
+              this.$Message.error(err.message);
+          }
+        }).then(() => {
+          const query = Object.assign({}, this.$route.query);
+          delete query.token;
+          delete query.action;
+          router.replace({
+            path: this.$route.path,
+            query
+          });
+        });
+        break;
+      }
+      case 'reset-password':
+        // Do nothing
+        break;
+      default: {
+        const jwt = localStorage.getItem('jwt');
+        if (jwt)
+          store.dispatch('auth/authAndGetUser', {strategy: 'jwt', payload: {jwt}}).catch(err => {
+            console.error(err);
+          });
+      }
+    }
   },
   mixins: [App]
 });

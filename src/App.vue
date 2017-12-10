@@ -5,7 +5,7 @@
     <div class="main-body">
       <router-view/>
     </div>
-    <app-copy></app-copy>
+    <!--<app-copy></app-copy>-->
   </div>
 </template>
 
