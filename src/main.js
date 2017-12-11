@@ -16,8 +16,8 @@ Object.keys(components).forEach(x => Vue.component(x, components[x]));
 
 /* eslint-disable no-new */
 let app = new Vue({
-  router,
   store,
+  router,
   data: {
     title: '云众包',
   },

@@ -1,6 +1,6 @@
 class State {
   newVersionAvailable = false;
-  loginDialog = false;
+  menuName = 'home';
 }
 
 const state = new State();
@@ -9,8 +9,8 @@ const mutations = {
   newVersionAvailable(state) {
     state.newVersionAvailable = true;
   },
-  loginDialogSet(state, visible) {
-    state.loginDialog = visible;
+  menuNameSet(state, value) {
+    state.menuName = value;
   }
 };
 

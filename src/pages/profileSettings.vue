@@ -50,7 +50,7 @@
           uploadMsg();
           this.$Message.success('上传成功');
           console.error(err);
-          this.$store.commit('appshell/addSnackbarMessage', err.message);
+          this.$Message.error(err.message);
         });
         return false;
       }

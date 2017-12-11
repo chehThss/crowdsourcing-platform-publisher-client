@@ -4,37 +4,41 @@
       <Col span="4" class="logo">
       云众包
       </Col>
-      <Col span="8"  class="search-box">
-      <Input v-model="searchContent" icon="ios-search-strong" placeholder="搜索任务"></Input>
-      </Col>
-      <Col span="12">
+      <Col span="20" v-if="user">
         <Col span="18" class="nav">
         <Menu mode="horizontal"
               theme="light"
               ref="nav"
               @on-select="navigationSelected"
-              active-name="home">
-          <MenuItem to="/" name="home">
-            <Icon type="home"></Icon>
-            首页
-          </MenuItem>
-          <MenuItem v-if="user" name="manage-task">
+              :active-name="menuName">
+          <MenuItem name="myTasksManage">
             <Icon type="ios-list-outline"></Icon>
-            管理任务
+            我的任务
           </MenuItem>
         </Menu>
         </Col>
         <Col span="6" class="nav-user">
-          <Dropdown v-if="user" class="user-menu">
+          <Dropdown class="user-menu">
             <Avatar :src="avatarThumbnail" class="user-avatar-thumbnail"></Avatar>
             <DropdownMenu slot="list">
               <DropdownItem @click.native="$router.push({name: 'profileSettings'})">个人中心</DropdownItem>
               <DropdownItem @click.native="onLogout">登出</DropdownItem>
             </DropdownMenu>
           </Dropdown>
-          <Button size="large" v-else type="text" icon="ios-person" @click="loginButtonClicked">登录</Button>
         </Col>
       </Col>
+      <Col v-else span="20">
+        <Menu mode="horizontal"
+            theme="light"
+            ref="nav"
+            @on-select="navigationSelected"
+            :active-name="menuName">
+          <MenuItem to="/" name="home">
+            <Icon type="home"></Icon>
+            首页
+          </MenuItem>
+        </Menu>
+    </Col>
     </Row>
   </Row>
 </template>
@@ -49,17 +53,28 @@
         searchContent: '',
       }
     },
+    computed: {
+      menuName: {
+        get() {
+          return this.$store.state.appshell.menuName;
+        },
+        set(value) {
+          this.$store.commit('appshell/menuNameSet', value);
+        }
+      }
+    },
+    watch: {
+      '$router.history.current.name'(){
+        console.log(this.$router.history.current.name)
+      }
+    },
     methods: {
       loginButtonClicked() {
         this.$store.commit('appshell/loginDialogSet', true);
       },
-      navigationSelected(name) {
-        switch(name){
-          case 'home':
-            this.$router.push({name: 'home'});
-            break;
-          default:
-        }
+      navigationSelected(value) {
+        this.menuName = value;
+        this.$router.push({name: value});
       },
       onLogout() {
         this.$store.commit('auth/updateToken');
@@ -113,6 +128,12 @@
 
   .nav-user {
     height: @header-height;
+    position: relative;
+  }
+
+  .nav-user > div {
+    position: absolute;
+    right: 10px;
   }
 
   @avatar-width: 40px;

@@ -8,7 +8,9 @@ import ProfileSettings from '@/pages/profileSettings'
 import PasswordSet from '@/pages/passwordSet'
 import ForgetPassword from '@/pages/forgetPassword'
 import ResetPassword from '@/pages/resetPassword'
+import MyTasksManage from '@/pages/myTasksManage'
 import iView from 'iview'
+import store from '../store'
 
 Vue.use(Router);
 
@@ -59,12 +61,18 @@ let router = new Router({
       path: '/admin/reset-password',
       name: 'resetPassword',
       component: ResetPassword,
+    },
+    {
+      path: '/admin/my-task',
+      name: 'myTasksManage',
+      component: MyTasksManage
     }
   ]
 });
 
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start();
+  store.commit('appshell/menuNameSet', to.name);
   next();
 });
 

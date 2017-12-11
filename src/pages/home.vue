@@ -1,22 +1,25 @@
 <template>
   <div class="home-body">
-    <div v-if="user" class="user-home">
-      <profile-card class="profile"></profile-card>
-      <div style="width: 100%;">
-        <div class="nav-home">
-          <Button type="text">我的任务</Button>
+    <div class="login-card-container" v-if="!user">
+      <h2 style="text-align: center; margin-bottom: 20px">登录</h2>
+      <div class="login-card">
+        <Form ref="formValidate">
+          <FormItem :error="usernameError">
+            <p>用户名或邮箱</p>
+            <Input ref="usernameInput" type="text" v-model="username" placeholder=""></Input>
+          </FormItem>
+          <FormItem :error="passwordError">
+            <p>密码</p>
+            <Input ref="passwordInput" type="password" v-model="password" placeholder="" @on-enter="handleLogin"></Input>
+          </FormItem>
+        </Form>
+        <div style="position: relative; top: -5px;">
+          <a @click="handleRegister">注册账号</a>
+          <a style="position: absolute; right: 0;"
+             @click="handleForgetPassword">忘记密码</a>
         </div>
-        <div class="task-filter">
-          <Select v-model="taskType" class="task-type-select">
-            <Option v-for="item in taskTypeList"
-                    :value="item.value"
-                    :key="item.value">
-              {{item.label}}
-            </Option>
-          </Select>
-          <div>
-            <Button type="primary" icon="plus-round" @click="$router.push({ name: 'submit' })">新建任务</Button>
-          </div>
+        <div>
+          <Button type="primary" @click="handleLogin" style="width: 100%">登录</Button>
         </div>
       </div>
     </div>
@@ -25,47 +28,83 @@
 
 <script>
   import User from '../components/User.vue'
+  import Login from '../components/Login.vue'
 
   export default {
-    mixins: [User],
-    data() {
-      return {
-        taskType: 'all',
-        taskTypeList: [
-          { value: 'all', label: '全部' },
-          { value: 'saved', label: '暂存' },
-          { value: 'checking', label: '待审查' },
-          { value: 'toBePublished', label: '待发布' },
-          { value: 'doing', label: '正在进行' },
-          { value: 'done', label: '已完成' }
-        ],
+    mixins: [User, Login],
+    watch: {
+      user() {
+        if(this.user) {
+          this.$router.push({name: this.redirectName});
+        }
+      }
+    },
+    computed: {
+      redirectName() {
+        if(this.user){
+          if(this.user.roles.indexOf('PUBLISHER') !== -1)
+            return 'myTasksManage';
+          else
+            return 'home';
+        }
+        return '';
+      }
+    },
+    methods: {
+      handleLogin() {
+        if(!this.checkForm())
+          return;
+        this.login().then(result => {
+          this.$router.push({name: this.redirectName});
+          this.$Message.success(
+            {
+              content: '登录成功',
+              duration: 1,
+            },
+          )
+        }).catch(error => {
+          switch (error.message) {
+            case 'User does not exist':
+              this.$refs.usernameInput.focus();
+              break;
+            case 'Wrong password':
+              this.$refs.passwordInput.focus();
+              break;
+            case 'Permission denied':
+              this.$refs.usernameInput.focus();
+              break;
+            default:
+              console.error(error);
+              this.$Message.error(
+                {
+                  content: error,
+                  duration: 2
+                },
+              );
+          }
+        });
+      },
+      handleRegister () {
+        this.$router.push({name: 'register'});
+      },
+      handleForgetPassword() {
+        this.$router.push({name: 'forgetPassword'});
       }
     }
   }
 </script>
 
 <style lang="less">
-  .user-home {
+  .login-card-container {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
   }
-
-  .profile {
-    padding-right: 20px;
-  }
-  .nav-home .ivu-btn {
-    font-size: 16px;
-  }
-  .task-filter {
-    display: flex;
-    justify-content: flex-end;
-    padding-bottom: 5px;
-    border-top: solid 1px #b4b4b4;
-    border-bottom: solid 1px #b4b4b4;
-  }
-  .task-filter > div {
-    margin: 5px;
-  }
-  .task-type-select {
-    width: 25%;
+  .login-card {
+    width: 340px;
+    border-radius: 20px;
+    border: solid 1px #d3d3d3;
+    padding: 20px;
   }
 </style>

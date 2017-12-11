@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <login-dialog></login-dialog>
     <app-header></app-header>
     <div class="main-body">
       <router-view/>
@@ -23,7 +22,7 @@ export default {
   color: #2c3e50;
 }
 .main-body{
-  padding-top: 20px;
+  padding: 20px;
   margin: auto;
   max-width: 1024px;
   background-color: #ffffff;
