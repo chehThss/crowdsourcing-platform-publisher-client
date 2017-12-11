@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 20px">
+  <div>
     <p>请输入您的邮箱，我们将向您发送验证邮件。</p>
     <Form :label-width="60" class="forget-password-form">
       <FormItem :error="emailError" label="邮箱：">

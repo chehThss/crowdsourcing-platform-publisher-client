@@ -19,8 +19,7 @@ const mutations = {
 
 const actions = {
   async auth({commit}, data) {
-    const response = await throwOnError(axios().post('/api/auth/', data));
-    return response;
+    return await throwOnError(axios().post('/api/auth/', data));
   },
   async authAndGetUser({commit, dispatch, state}, data) {
     return dispatch('auth', data).then((response) => {

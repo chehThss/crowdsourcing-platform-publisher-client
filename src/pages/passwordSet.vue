@@ -1,10 +1,9 @@
 <template>
   <div>
-    <h1 style="padding-bottom: 20px">修改密码</h1>
+    <h1>修改密码</h1>
     <Form :label-width="80" style="width: 400px">
       <FormItem label="原密码：" :error="passwordForm.oldPassword.error">
         <Input type="password" v-model="passwordForm.oldPassword.content" autofocus></Input>
-        <a @click="handleForgetPassword">忘记密码?</a>
       </FormItem>
       <FormItem label="新密码：" :error="passwordForm.newPassword.error">
         <Input type="password" v-model="passwordForm.newPassword.content"></Input>
@@ -148,10 +147,6 @@
           return;
         this.showConfirmModal = true;
       },
-      handleForgetPassword() {
-        this.$store.commit('auth/updateToken');
-        this.$router.push({name: 'forgetPassword'});
-      }
     }
   }
 </script>

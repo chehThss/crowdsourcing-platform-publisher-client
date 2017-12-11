@@ -148,10 +148,6 @@
 </script>
 
 <style lang="less">
-  .register-page {
-    margin: auto;
-    padding: 20px 30px;
-  }
   .register-title {
     text-align: left;
     margin-bottom: 20px;

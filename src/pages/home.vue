@@ -45,10 +45,6 @@
 </script>
 
 <style lang="less">
-  .home-body{
-    padding: 20px;
-  }
-
   .user-home {
     display: flex;
   }

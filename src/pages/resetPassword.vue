@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 20px">
+  <div>
     <h1 style="padding-bottom: 20px">重置密码</h1>
     <Form :label-width="80" style="width: 400px">
       <FormItem label="新密码：" :error="passwordForm.newPassword.error">

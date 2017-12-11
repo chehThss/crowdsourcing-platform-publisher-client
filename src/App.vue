@@ -23,7 +23,7 @@ export default {
   color: #2c3e50;
 }
 .main-body{
-  padding: 5px;
+  padding-top: 20px;
   margin: auto;
   max-width: 1024px;
   background-color: #ffffff;
