@@ -9,6 +9,8 @@ import PasswordSet from '@/pages/passwordSet'
 import ForgetPassword from '@/pages/forgetPassword'
 import ResetPassword from '@/pages/resetPassword'
 import MyTasksManage from '@/pages/myTasksManage'
+import UserAdmin from '@/pages/userAdminPages/index'
+import UsersManage from '@/pages/userAdminPages/usersManage'
 import iView from 'iview'
 import store from '../store'
 
@@ -66,6 +68,18 @@ let router = new Router({
       path: '/admin/my-task',
       name: 'myTasksManage',
       component: MyTasksManage
+    },
+    {
+      path: '/admin/users',
+      component: UserAdmin,
+      children: [
+        {
+          path: 'manage',
+          name: 'usersManage',
+          component: UsersManage,
+          props: true,
+        }
+      ]
     }
   ]
 });

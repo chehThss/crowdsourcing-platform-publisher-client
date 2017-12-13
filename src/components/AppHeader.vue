@@ -11,9 +11,17 @@
               ref="nav"
               @on-select="navigationSelected"
               :active-name="menuName">
-          <MenuItem name="myTasksManage">
+          <MenuItem v-if="isPublisher" name="myTasksManage">
             <Icon type="ios-list-outline"></Icon>
             我的任务
+          </MenuItem>
+          <MenuItem v-if="isTaskAdmin" name="tasksManage">
+            <Icon type="ios-paper-outline"></Icon>
+            管理任务
+          </MenuItem>
+          <MenuItem v-if="isUserAdmin" name="usersManage">
+            <Icon type="ios-people-outline"></Icon>
+            管理用户
           </MenuItem>
         </Menu>
         </Col>
@@ -58,22 +66,19 @@
         get() {
           return this.$store.state.appshell.menuName;
         },
-        set(value) {
-          this.$store.commit('appshell/menuNameSet', value);
-        }
-      }
-    },
-    watch: {
-      '$router.history.current.name'(){
-        console.log(this.$router.history.current.name)
+      },
+      isPublisher() {
+        return this.user.roles.indexOf('PUBLISHER') !== -1;
+      },
+      isTaskAdmin() {
+        return this.user.roles.indexOf('TASK_ADMIN') !== -1;
+      },
+      isUserAdmin() {
+        return this.user.roles.indexOf('USER_ADMIN') !== -1;
       }
     },
     methods: {
-      loginButtonClicked() {
-        this.$store.commit('appshell/loginDialogSet', true);
-      },
       navigationSelected(value) {
-        this.menuName = value;
         this.$router.push({name: value});
       },
       onLogout() {

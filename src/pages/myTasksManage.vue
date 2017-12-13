@@ -1,9 +1,6 @@
 <template>
   <div v-if="user" class="user-home">
     <div style="width: 100%;">
-      <div class="nav-home">
-        <Button type="text">我的任务</Button>
-      </div>
       <div class="task-filter">
         <Select v-model="taskType" class="task-type-select">
           <Option v-for="item in taskTypeList"
@@ -46,9 +43,6 @@
     display: flex;
   }
 
-  .profile {
-    padding-right: 20px;
-  }
   .nav-home .ivu-btn {
     font-size: 16px;
   }
@@ -56,7 +50,6 @@
     display: flex;
     justify-content: flex-end;
     padding-bottom: 5px;
-    border-top: solid 1px #b4b4b4;
     border-bottom: solid 1px #b4b4b4;
   }
   .task-filter > div {

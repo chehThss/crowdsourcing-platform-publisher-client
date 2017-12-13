@@ -1,5 +1,6 @@
-import {axios, throwOnError, objectToFormData} from './transport';
+import {axios, throwOnError, objectToFormData, objectToQueryString} from './transport';
 import Vue from 'vue';
+import qs from 'qs';
 
 const state = {
   users: {}
@@ -30,10 +31,22 @@ const actions = {
     headers.Authorization = 'Bearer ' + jwt;
     const response = await throwOnError(axios().get('/api/user/' + id, {headers}));
     if(response.roles.filter(item => AllowedUserRoles.includes(item)).length === 0){
-      let err = new Error('Permission denied');
-      throw err;
+      throw new Error('Permission denied');
     }
     commit('updateUser', response);
+    return response;
+  },
+  async find({commit}, query) {
+    const headers = {};
+    const jwt = window.localStorage.getItem('jwt');
+    headers.Authorization = 'Bearer ' + jwt;
+    const response = await throwOnError(axios().get('/api/user', {
+      params: query,
+      paramsSerializer: qs.stringify,
+      headers
+    }));
+    for(let user of response.data)
+      commit('updateUser', user);
     return response;
   },
   async patch({commit}, data) {
@@ -65,6 +78,20 @@ const actions = {
     const id = data.id;
     delete data.id;
     return await throwOnError(axios().post('/api/email/' + id, data));
+  },
+  async delete({commit}, id) {
+    const headers = {};
+    const jwt = window.localStorage.getItem('jwt');
+    headers.Authorization = 'Bearer ' + jwt;
+    const response = await throwOnError(axios().delete('/api/user/' + id, {headers}));
+    commit('deleteUser', id);
+    return response;
+  },
+  async create({commit}, data) {
+    const headers = {};
+    const jwt = window.localStorage.getItem('jwt');
+    headers.Authorization = 'Bearer ' + jwt;
+    return await throwOnError(axios().post('/api/user', data, {headers}));
   }
 };
 

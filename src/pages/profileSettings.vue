@@ -1,14 +1,14 @@
 <template>
   <div v-if="user" class="profile-content">
     <div class="profile-form">
-      <h1>个人信息</h1>
+      <h1 style="margin-bottom: 10px">个人信息</h1>
       <div>
         <div class="profile-info-label">用户名：</div>
         <div class="profile-info-content">{{user.username}}</div>
       </div>
       <div>
         <div class="profile-info-label">邮箱：</div>
-        <div class="profile-info-content">{{user.email}}</div>
+        <div class="profile-info-content">{{user.email ? user.email: '未绑定'}}</div>
       </div>
     </div>
     <div class="avatar-bar" style="text-align: center">
@@ -46,9 +46,9 @@
           avatar: file
         }).then(() => {
           uploadMsg();
+          this.$Message.success('上传成功');
         }).catch(err => {
           uploadMsg();
-          this.$Message.success('上传成功');
           console.error(err);
           this.$Message.error(err.message);
         });

@@ -2,6 +2,11 @@
   import default_avatar from '../assets/img/default_avatar.jpeg';
 
   export default {
+    data() {
+      return {
+        defaultAvatar: default_avatar,
+      }
+    },
     computed: {
       user() {
         return this.$store.getters['auth/user'];
@@ -24,9 +29,6 @@
         else
           return default_avatar;
       },
-      defaultAvatar() {
-        return default_avatar;
-      }
     }
   }
 </script>
