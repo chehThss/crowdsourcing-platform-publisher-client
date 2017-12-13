@@ -40,6 +40,7 @@
         </Row>
       </Card>
     </div>
+    <p v-if="searchTotal !== null" style="margin: 8px; color: grey">共{{searchTotal}}条记录</p>
     <div>
       <Card v-for="(item, index) in populatedUserList" v-if="item" :key="item._id">
         <div style="display: flex; align-items: center">
@@ -125,7 +126,8 @@
         finished: false,
         loading: false,
         scrollListener: null,
-        createUserDialogVisible: false
+        createUserDialogVisible: false,
+        searchTotal: null
       }
     },
     computed: {
@@ -185,6 +187,8 @@
       fetchUsers(isFirstQuery) {
         this.loading = true;
         this.$store.dispatch('user/find', this.queryData(isFirstQuery)).then((response) => {
+          if(isFirstQuery)
+            this.searchTotal = response.total;
           this.userList = this.userList.concat(response.data.map(item => item._id));
           if (response.data.length < FetchLimit) {
             this.finished = true;
@@ -224,6 +228,7 @@
         this.finished = false;
         this.userList = [];
         this.lastId = '';
+        this.searchTotal = null;
         this.textSearch = this.$route.query.search || '';
         this.userRoleFilter = this.$route.query.role || 'all';
         this.userBlockFilter = this.$route.query.block || 'all';
@@ -277,6 +282,7 @@
           this.finished = false;
           this.userList = [];
           this.lastId = '';
+          this.searchTotal = null;
           this.fetchUsers(true);
         }
       }
