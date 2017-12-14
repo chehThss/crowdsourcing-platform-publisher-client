@@ -1,11 +1,6 @@
 <template>
-  <div class="publish" v-if="user">
-    <Steps :current="0" class="publish-progress">
-      <Step title="待提交"></Step>
-      <Step title="待审核"></Step>
-      <Step title="待发布"></Step>
-      <Step title="已发布"></Step>
-    </Steps>
+  <div class="publish">
+    <h1 style="margin: 20px">任务创建</h1>
     <Form ref="submitForm"
           :model="formSubmit"
           :rules="ruleSubmit"
@@ -89,7 +84,7 @@
 </template>
 
 <script>
-  import User from '../components/User.vue'
+  import User from '../../components/User.vue'
   import debounce from 'lodash/debounce.js'
   import marked from 'marked'
 
@@ -109,6 +104,7 @@
           titlePicture: null,
           publisher: '',
           tags: [],
+          excerption: '',
           description: '',
           deadline: null,
         },
