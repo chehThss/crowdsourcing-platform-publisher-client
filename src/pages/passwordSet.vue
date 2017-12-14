@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>修改密码</h1>
+    <h1 style="margin-bottom: 10px">修改密码</h1>
     <Form :label-width="80" style="width: 400px">
       <FormItem label="原密码：" :error="passwordForm.oldPassword.error">
         <Input type="password" v-model="passwordForm.oldPassword.content" autofocus></Input>

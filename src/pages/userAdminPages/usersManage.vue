@@ -111,7 +111,7 @@
 <script>
   import User from '../../components/User.vue'
   import dateFormat from 'dateformat'
-  const FetchLimit = 5;
+  const FetchLimit = 8;
 
   export default {
     mixins: [User],

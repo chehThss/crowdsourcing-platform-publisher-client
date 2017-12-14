@@ -2,15 +2,16 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/home'
 import Register from '@/pages/register'
-import TaskSubmit from '@/pages/task_submit'
 import PersonalCenter from '@/pages/personalCenter'
 import ProfileSettings from '@/pages/profileSettings'
 import PasswordSet from '@/pages/passwordSet'
 import ForgetPassword from '@/pages/forgetPassword'
 import ResetPassword from '@/pages/resetPassword'
-import MyTasksManage from '@/pages/myTasksManage'
 import UserAdmin from '@/pages/userAdminPages/index'
 import UsersManage from '@/pages/userAdminPages/usersManage'
+import PublisherIndex from '@/pages/publisherPages/index'
+import MyTasksManage from '@/pages/publisherPages/myTasksManage'
+import TaskCreate from '@/pages/publisherPages/taskCreate'
 import iView from 'iview'
 import store from '../store'
 
@@ -28,11 +29,6 @@ let router = new Router({
       path: '/admin/register',
       name: 'register',
       component: Register
-    },
-    {
-      path: '/admin/submit',
-      name: 'submit',
-      component: TaskSubmit
     },
     {
       path: '/admin/account',
@@ -65,11 +61,6 @@ let router = new Router({
       component: ResetPassword,
     },
     {
-      path: '/admin/my-task',
-      name: 'myTasksManage',
-      component: MyTasksManage
-    },
-    {
       path: '/admin/users',
       component: UserAdmin,
       children: [
@@ -78,6 +69,22 @@ let router = new Router({
           name: 'usersManage',
           component: UsersManage,
           props: true,
+        }
+      ]
+    },
+    {
+      path: '/admin/my-tasks',
+      component: PublisherIndex,
+      children: [
+        {
+          path: 'manage',
+          name: 'myTasksManage',
+          component: MyTasksManage
+        },
+        {
+          path: 'create',
+          name: 'taskCreate',
+          component: TaskCreate
         }
       ]
     }
