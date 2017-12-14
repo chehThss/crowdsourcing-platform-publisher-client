@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/home'
+import AboutSite from '@/pages/aboutSite'
 import Register from '@/pages/register'
 import PersonalCenter from '@/pages/personalCenter'
 import ProfileSettings from '@/pages/profileSettings'
@@ -24,6 +25,11 @@ let router = new Router({
       path: '/admin/(index.html)?',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/admin/about',
+      name: 'aboutSite',
+      component: AboutSite
     },
     {
       path: '/admin/register',

@@ -1,20 +1,20 @@
 <template>
-  <div class="publish">
+  <div>
     <h1 style="margin: 20px">任务创建</h1>
-    <Form ref="submitForm"
-          :model="formSubmit"
+    <Form ref="form"
+          :model="task"
           :rules="ruleSubmit"
           :label-width="100">
-      <FormItem prop="taskTitle" label="任务标题：">
-        <Input type="text" v-model="formSubmit.title" placeholder="标题" autofocus></Input>
+      <FormItem prop="title" label="任务标题：">
+        <Input type="text" v-model="task.title" placeholder="标题"></Input>
       </FormItem>
       <FormItem label="题图：">
         <Upload
           class="picture-upload-container"
-          v-show="!showPicturePreview"
+          v-show="!backgroundImageURL"
           action=""
           type="drag"
-          :before-upload="handleUpload"
+          :before-upload="handleUploadPicture"
           :show-upload-list="false"
           accept="image/*"
           :format="['jpg', 'jpeg', 'png']"
@@ -25,7 +25,7 @@
               <p>点击或拖拽上传题图</p>
           </div>
         </Upload>
-        <div v-show="showPicturePreview" class="picture-preview-container">
+        <div v-show="backgroundImageURL" class="picture-preview-container">
           <div :style="{backgroundImage: backgroundImageURL}" class="picture-preview">
             <div class="image-preview-cover">
               <icon type="ios-trash-outline" @click.native="handleRemove"></icon>
@@ -36,9 +36,20 @@
       <FormItem label="发布者：">
         <p style="text-align: left">{{user.username}}</p>
       </FormItem>
-      <FormItem label="标签：">
+      <FormItem label="任务类型：">
+        <Select style="width: 25%" :clearable="true" :filterable="true" @on-change="setTaskType">
+          <Option v-for="item in taskTypes"
+                  :value="item._id"
+                  :key="item._id">{{item.name}}</Option>
+        </Select>
+        <span style="color: grey; margin-left: 10px">
+          若无您满意的类型，可<a @click="$router.push({name: 'aboutSite'})">联系我们</a>定制任务类型
+        </span>
+        <p v-if="task.type" style="margin-left: 5px; margin-top: 5px;">{{task.type.description}}</p>
+      </FormItem>
+      <FormItem prop="tags" label="标签：">
         <Tag
-          v-for="item in formSubmit.tags"
+          v-for="item in task.tags"
           :key="item"
           :name="item"
           closable
@@ -53,15 +64,21 @@
           style="width: 150px">
         </Input>
       </FormItem>
-      <FormItem label="任务截止日期">
-          <DatePicker type="date" placeholder="选择日期" v-model="formSubmit.deadline"></DatePicker>
+      <FormItem label="截止日期：">
+          <DatePicker type="date" placeholder="选择日期" :options="datePickerOption" v-model="task.deadline"></DatePicker>
         </Row>
       </FormItem>
-      <FormItem label="任务描述：">
+      <FormItem prop="excerption" label="任务简介：">
+        <Input
+          v-model="task.excerption"
+          type="textarea"
+          placeholder="请输入任务简介，不超过140字"></Input>
+      </FormItem>
+      <FormItem prop="description" label="任务描述：">
         <div class="description-editor">
           <Input
             class="description-input"
-            v-model="formSubmit.description"
+            v-model="task.description"
             type="textarea"
             placeholder="请输入任务简介">
           </Input>
@@ -70,16 +87,8 @@
       </FormItem>
     </Form>
     <div class="submit-buttons">
-      <Button type="ghost" @click="handleSave">保存</Button>
-      <Button type="primary" @click="handleSubmitButtonClicked">提交</Button>
+      <Button type="primary" @click="handleCreate">创建</Button>
     </div>
-    <Modal
-      title="提交"
-      v-model="showSubmitConfirmModal"
-      @on-ok="handleSubmit"
-      class="vertical-center-modal">
-      <p>确认要提交您的任务吗？</p>
-    </Modal>
   </div>
 </template>
 
@@ -91,68 +100,112 @@
   export default {
     mixins: [User],
     data() {
-      const validateTitle = (rule, value, callback) => {
-        if (!this.formSubmit.title) {
-          callback(new Error('请输入标题'));
+      const validateTags = (rule, value, callback) => {
+        if(this.task.tags.length > 5) {
+          callback(new Error('标签数量不能超过5个'));
         } else {
-          callback()
+          callback();
         }
       };
       return {
-        formSubmit: {
+        task: {
           title: '',
           titlePicture: null,
-          publisher: '',
+          type: '',
           tags: [],
           excerption: '',
           description: '',
           deadline: null,
         },
         ruleSubmit: {
-          taskTitle: [
-            { validator: validateTitle, trigger: 'blur'}
+          title: [
+            { required: true, message: '标题不能为空', trigger: 'blur' },
+          ],
+          tags: [
+            {
+              validator: (rule, value, callback) => {
+                if (this.task.tags.length > 5) {
+                  callback(new Error('标签数量不能超过5个'));
+                } else {
+                  callback();
+                }
+              },
+              trigger: 'change'
+            }
+          ],
+          excerption: [
+            { required: true, message: '简介不能为空', trigger: 'blur' },
+            {
+              validator: (rule, value, callback) => {
+                if (this.task.excerption.length > 140) {
+                  callback(new Error('不能超过140字'));
+                } else {
+                  callback();
+                }
+              },
+              trigger: 'change'
+            }
+          ],
+          description: [
+            { required: true, message: '任务描述不能为空', trigger: 'blur' },
           ]
         },
         imagePreviewURL: '',
-        showPicturePreview: false,
         tagInput: '',
-        tagsAutoComplete: [],
+//        tagsAutoComplete: [],
         taskDescription: '',
-        showSubmitConfirmModal: false
+        datePickerOption: {
+          disabledDate (date) {
+            return date && date.valueOf() < Date.now();
+          }
+        }
       }
     },
     computed: {
       backgroundImageURL(){
-        return 'url("' + this.imagePreviewURL + '")';
+        if(this.imagePreviewURL)
+          return 'url("' + this.imagePreviewURL + '")';
+        return '';
       },
       compiledDescription() {
         return marked(this.taskDescription)
+      },
+      taskTypes() {
+        return this.$store.state.taskType.taskTypes;
       }
     },
     watch: {
-      'formSubmit.description': function () {
+      'task.description': function () {
         this.updateDescription();
       },
     },
     methods: {
-      handleUpload(file) {
-        this.formSubmit.titlePicture= file;
+      handleUploadPicture(file) {
+        if (['image/gif', 'image/jpeg', 'image/png'].indexOf(file.type) === -1) {
+          this.$Message.error('未知的图片格式!');
+          return false;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+          this.$Message.error('图片大小必须小于5M!');
+          return false;
+        }
+        this.task.titlePicture= file;
         this.imagePreviewURL = URL.createObjectURL(file);
-        this.showPicturePreview = true;
         return false;
       },
       handleRemove() {
-        this.file = null;
-        this.showPicturePreview = false;
+        this.task.titlePicture = null;
+        this.imagePreviewURL = '';
       },
       handleRemoveTag(event, name) {
-        const index = this.formSubmit.tags.indexOf(name);
-        this.formSubmit.tags.splice(index, 1);
+        const index = this.task.tags.indexOf(name);
+        this.task.tags.splice(index, 1);
+        this.$refs.form.validateField('tags');
       },
       handelTagInputKeyDown(event) {
         if(this.tagInput) {
-          if(this.formSubmit.tags.indexOf(this.tagInput) === -1) {
-            this.formSubmit.tags.push(this.tagInput);
+          if(this.task.tags.indexOf(this.tagInput) === -1) {
+            this.task.tags.push(this.tagInput);
             this.tagInput = '';
           } else {
             this.$Message.warning({
@@ -163,38 +216,54 @@
         }
       },
       updateDescription: debounce(function () {
-        this.taskDescription = this.formSubmit.description;
+        this.taskDescription = this.task.description;
       }, 500),
-      handleSave() {
-        // TODO: save current content
-      },
-      handleSubmitButtonClicked() {
-        this.$refs.submitForm.validate((valid) => {
+      handleCreate() {
+        this.$refs.form.validate((valid) => {
           if(valid) {
-            this.$refs.submitForm.resetFields();
-            this.showSubmitConfirmModal = true;
+            this.$Modal.confirm({
+              title: '确认',
+              content: !this.task.type ?
+                `<p>确认要创建您的任务吗？</p>
+                 <p style="color:red">您尚未选定任务类型，可在创建完成之后补充。</p>` :
+                `<p>确认要创建您的任务吗？</p>
+                 <p style="color:red">您已选定任务类型
+                    <b>${this.task.type.name}</b>，创建任务后将无法更改，确认选择该类型吗
+                 </p>`,
+              onOk: () => {
+                let data = {};
+                data.name = this.task.title;
+                data.description = this.task.description;
+                data.excerption = this.task.excerption;
+                if(this.task.tags.length)
+                  data.tags = this.task.tags;
+                if(this.task.type)
+                  data.type = this.task.type._id;
+                if(this.task.deadline)
+                  data.deadline = this.task.deadline;
+                if(this.task.titlePicture)
+                  data.picture = this.task.titlePicture;
+                return this.$store.dispatch('task/create', data).then(
+                  // TODO: change route
+                ).catch(err => {
+                  this.$Message.error(err.message);
+                  console.error(err);
+                })
+              }
+            })
           }
         });
       },
-      handleSubmit() {
-        // TODO: submit task
-        console.log("TODO: submit task")
-        // Submit successfully
-        if(true) {
-          this.$Message.success({
-            content: "任务提交成功，请等待审核",
-            duration: 5,
-            onClose: () => { this.$router.push({name: "home"}) },
-            closeable: true
-          })
-        } else {
-          this.$Message.error({
-            content: "提交失败",
-            duration: 5
-          })
-        }
+      setTaskType(value) {
+        this.task.type = this.taskTypeById(value);
+      },
+      taskTypeById(id) {
+        return this.taskTypes.find(item => item._id === id);
       }
     },
+//    mounted() {
+//      // TODO: load task type
+//    }
   }
 </script>
 

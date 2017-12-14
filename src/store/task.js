@@ -3,22 +3,20 @@ import Vue from 'vue';
 import qs from 'qs';
 
 const state = {
-  users: {}
+  tasks: {}
 };
 
-const AllowedUserRoles = ['PUBLISHER', 'TASK_ADMIN', 'USER_ADMIN', 'SITE_ADMIN'];
-
 const mutations = {
-  updateUser(state, user) {
-    if (typeof user.updatedAt === 'string')
-      user.updatedAt = new Date(user.updatedAt);
-    const old = state.users[user._id];
-    if (old && old.updatedAt.getTime() >= user.updatedAt.getTime())
+  updateTask(state, task) {
+    if (typeof task.updatedAt === 'string')
+      task.updatedAt = new Date(task.updatedAt);
+    const old = state.tasks[task._id];
+    if (old && old.updatedAt.getTime() >= task.updatedAt.getTime())
       return;
-    Vue.set(state.users, user._id, user);
+    Vue.set(state.tasks, task._id, task);
   },
-  deleteUser(state, id) {
-    Vue.delete(state.users, id)
+  deleteTask(state, id) {
+    Vue.delete(state.tasks, id)
   }
 };
 
@@ -27,24 +25,21 @@ const actions = {
     const headers = {};
     const jwt = window.localStorage.getItem('jwt');
     headers.Authorization = 'Bearer ' + jwt;
-    const response = await throwOnError(axios().get('/api/user/' + id, {headers}));
-    if(response.roles.filter(item => AllowedUserRoles.includes(item)).length === 0){
-      throw new Error('Permission denied');
-    }
-    commit('updateUser', response);
+    const response = await throwOnError(axios().get('/api/task/' + id, {headers}));
+    commit('updateTask', response);
     return response;
   },
   async find({commit}, query) {
     const headers = {};
     const jwt = window.localStorage.getItem('jwt');
     headers.Authorization = 'Bearer ' + jwt;
-    const response = await throwOnError(axios().get('/api/user', {
+    const response = await throwOnError(axios().get('/api/task', {
       params: query,
       paramsSerializer: qs.stringify,
       headers
     }));
-    for(let user of response.data)
-      commit('updateUser', user);
+    for(let task of response.data)
+      commit('updateTask', task);
     return response;
   },
   async patch({commit}, data) {
@@ -64,33 +59,39 @@ const actions = {
     }
     if (onUploadProgress)
       config.onUploadProgress = onUploadProgress;
-    const response = await throwOnError(axios().patch('/api/user/' + id, data, config));
-    commit('updateUser', response);
+    const response = await throwOnError(axios().patch('/api/task/' + id, data, config));
+    commit('updateTask', response);
     return response;
-  },
-  async sendMail(_, data) {
-    let a = await throwOnError(axios().post('/api/email/', data));
-    return a;
-  },
-  async confirmMail(_, data) {
-    const id = data.id;
-    delete data.id;
-    return await throwOnError(axios().post('/api/email/' + id, data));
   },
   async delete({commit}, id) {
     const headers = {};
     const jwt = window.localStorage.getItem('jwt');
     headers.Authorization = 'Bearer ' + jwt;
-    const response = await throwOnError(axios().delete('/api/user/' + id, {headers}));
-    commit('deleteUser', id);
+    const response = await throwOnError(axios().delete('/api/task/' + id, {headers}));
+    commit('deleteTask', id);
     return response;
   },
   async create({commit}, data) {
-    const headers = {};
+    const config = {
+      params: {populate: true},
+      headers: {}
+    };
     const jwt = window.localStorage.getItem('jwt');
-    headers.Authorization = 'Bearer ' + jwt;
-    return await throwOnError(axios().post('/api/user', data, {headers}));
-  }
+    const id = data.id, onUploadProgress = data.onUploadProgress;
+    delete data.id;
+    delete data.onUploadProgress;
+    if (jwt)
+      config.headers.Authorization = 'Bearer ' + jwt;
+    if (data.picture) {
+      config.headers['Content-Type'] = 'multipart/form-data';
+      data = objectToFormData(data);
+    }
+    if (onUploadProgress)
+      config.onUploadProgress = onUploadProgress;
+    const response = await throwOnError(axios().post('/api/task/', data, config));
+    commit('updateTask', response);
+    return response;
+  },
 };
 
 export default {
