@@ -95,16 +95,6 @@
               <div>{{getStatus(item.status)}}</div>
             </div>
           </i-col>
-          <i-col span="6" style="align-self: flex-end">
-            <div style="text-align: right">
-              <Button type="primary">
-                <i class="fa fa-info" aria-hidden="true" style="margin-right: 4px"></i>详情
-              </Button>
-              <Button type="error" @click="confirmDelete(item)">
-                <i class="fa fa-trash" aria-hidden="true" style="margin-right: 4px"></i>删除
-              </Button>
-            </div>
-          </i-col>
         </Row>
       </Card>
       <div @scroll="handleScroll" style="display: flex; justify-content: center;">
@@ -238,7 +228,7 @@
         });
       },
       queryData(isFirstQuery) {
-        let data = {populate: true, limit: FetchLimit, filter: { publisher: this.user._id }};
+        let data = {populate: true, limit: FetchLimit, filter: {  }};
         // Set filter
         if (this.textSearch)
           data.filter.search = this.textSearch;
@@ -294,7 +284,7 @@
             query.completed !== this.$route.query.completed ||
             query.tag !== this.$route.query.tag) {
             this.$router.push({
-              name: 'myTasksManage', query
+              name: 'tasksManage', query
             });
           }
         }

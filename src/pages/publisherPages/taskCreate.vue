@@ -94,11 +94,12 @@
 
 <script>
   import User from '../../components/User.vue'
+  import TaskTypes from '../../components/taskTypes.vue'
   import debounce from 'lodash/debounce.js'
   import marked from 'marked'
 
   export default {
-    mixins: [User],
+    mixins: [User, TaskTypes],
     data() {
       const validateTags = (rule, value, callback) => {
         if(this.task.tags.length > 5) {
@@ -257,13 +258,7 @@
       setTaskType(value) {
         this.task.type = this.taskTypeById(value);
       },
-      taskTypeById(id) {
-        return this.taskTypes.find(item => item._id === id);
-      }
     },
-//    mounted() {
-//      // TODO: load task type
-//    }
   }
 </script>
 

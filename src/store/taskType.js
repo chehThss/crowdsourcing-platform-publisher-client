@@ -8,7 +8,22 @@ const state = {
       _id: 'guess-number',
       name: '猜数字',
       description: '猜数字游戏'
-    }
+    },
+    {
+      _id: 'test1',
+      name: '测试1',
+      description: '测试1描述'
+    },
+    {
+      _id: 'test2',
+      name: '测试2',
+      description: '测试2描述'
+    },
+    {
+      _id: 'test3',
+      name: '测试3',
+      description: '测试3描述'
+    },
   ]
 };
 

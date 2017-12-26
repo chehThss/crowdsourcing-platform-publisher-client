@@ -1,3 +1,4 @@
+<script src="../../store/task.js"></script>
 <template>
   <div>
     <div style="border-bottom: solid 1px #dddddd">
@@ -57,7 +58,7 @@
             </div>
             <div>
               <div class="user-info-label">创建时间：</div>
-              <div class="user-info-text user-info-date">{{formatDate(item.createAt)}}</div>
+              <div class="user-info-text user-info-date">{{formatDate(item.createdAt)}}</div>
             </div>
             <div>
               <div class="user-info-label">权限：</div>
@@ -118,7 +119,7 @@
     data() {
       return {
         textSearch: '',
-        isFilterCollapse: true,
+        isFilterCollapse: false,
         userRoleFilter: 'all',
         userBlockFilter: 'all',
         userList: [],
@@ -235,7 +236,7 @@
         this.fetchUsers(true);
       },
       formatDate(date) {
-        return dateFormat(date, 'yyyy年mm月dd日, hh时mm分');
+        return dateFormat(date, 'yyyy年mm月dd日, hh时MM分');
       },
       handleRoleChange(item, newRoles) {
         const oldRoles = item.roles;
@@ -292,7 +293,7 @@
     },
     mounted() {
       window.addEventListener('scroll', this.scrollListener = this.handleScroll.bind(this));
-      this.fetchUsers(true);
+      this.fetchData();
     },
   }
 </script>

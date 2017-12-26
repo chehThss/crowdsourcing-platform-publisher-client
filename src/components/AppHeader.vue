@@ -116,6 +116,7 @@
   }
   .header-content{
     max-width: 1024px;
+    min-width: 750px;
     margin: auto;
   }
 

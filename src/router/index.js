@@ -13,6 +13,8 @@ import UsersManage from '@/pages/userAdminPages/usersManage'
 import PublisherIndex from '@/pages/publisherPages/index'
 import MyTasksManage from '@/pages/publisherPages/myTasksManage'
 import TaskCreate from '@/pages/publisherPages/taskCreate'
+import TaskAdminIndex from '@/pages/taskAdminPages/index'
+import TasksManage from '@/pages/taskAdminPages/tasksManage'
 import iView from 'iview'
 import store from '../store'
 
@@ -91,6 +93,17 @@ let router = new Router({
           path: 'create',
           name: 'taskCreate',
           component: TaskCreate
+        }
+      ]
+    },
+    {
+      path: '/admin/tasks',
+      component: TaskAdminIndex,
+      children: [
+        {
+          path: 'manage',
+          name: 'tasksManage',
+          component: TasksManage
         }
       ]
     }

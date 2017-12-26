@@ -8,11 +8,6 @@ const state = {
 
 const mutations = {
   updateTask(state, task) {
-    if (typeof task.updatedAt === 'string')
-      task.updatedAt = new Date(task.updatedAt);
-    const old = state.tasks[task._id];
-    if (old && old.updatedAt.getTime() >= task.updatedAt.getTime())
-      return;
     Vue.set(state.tasks, task._id, task);
   },
   deleteTask(state, id) {
