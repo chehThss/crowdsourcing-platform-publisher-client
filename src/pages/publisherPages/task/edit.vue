@@ -1,100 +1,103 @@
 <template>
   <div>
-    <h1 style="margin: 20px">任务创建</h1>
-    <Form ref="form"
-          :model="task"
-          :rules="ruleSubmit"
-          :label-width="100">
-      <FormItem prop="title" label="任务标题：">
-        <Input type="text" v-model="task.title" placeholder="标题"></Input>
-      </FormItem>
-      <FormItem label="题图：">
-        <Upload
-          class="picture-upload-container"
-          v-show="!backgroundImageURL"
-          action=""
-          type="drag"
-          :before-upload="handleUploadPicture"
-          :show-upload-list="false"
-          accept="image/*"
-          :format="['jpg', 'jpeg', 'png']"
-          :max-size="5120"
-        >
-          <div class="picture-upload">
+    <h1 style="margin: 20px">任务编辑</h1>
+    <div>
+      <Form ref="form"
+            :model="task"
+            :rules="ruleSubmit"
+            :label-width="100">
+        <FormItem prop="title" label="任务标题：">
+          <Input type="text" v-model="task.title" placeholder="标题"></Input>
+        </FormItem>
+        <FormItem label="题图：">
+          <Upload
+            class="picture-upload-container"
+            v-show="false"
+            action=""
+            type="drag"
+            :before-upload="handleUploadPicture"
+            :show-upload-list="false"
+            accept="image/*"
+            :format="['jpg', 'jpeg', 'png']"
+            :max-size="5120"
+          >
+            <div class="picture-upload">
               <Icon type="camera" size="40"></Icon>
               <p>点击或拖拽上传题图</p>
-          </div>
-        </Upload>
-        <div v-show="backgroundImageURL" class="picture-preview-container">
-          <div :style="{backgroundImage: backgroundImageURL}" class="picture-preview">
-            <div class="image-preview-cover">
-              <icon type="ios-trash-outline" @click.native="handleRemove"></icon>
+            </div>
+          </Upload>
+          <div v-show="backgroundImageURL" class="picture-preview-container">
+            <div :style="{backgroundImage: backgroundImageURL}" class="picture-preview">
+              <!--<div class="image-preview-cover">-->
+                <!--<icon type="ios-trash-outline" @click.native="handleRemove"></icon>-->
+              <!--</div>-->
             </div>
           </div>
-        </div>
-      </FormItem>
-      <FormItem label="发布者：">
-        <p style="text-align: left">{{user.username}}</p>
-      </FormItem>
-      <FormItem label="任务类型：">
-        <Select style="width: 25%" :clearable="true" :filterable="true" @on-change="setTaskType">
-          <Option v-for="item in taskTypes"
-                  :value="item._id"
-                  :key="item._id">{{item.name}}</Option>
-        </Select>
-        <span style="color: grey; margin-left: 10px">
+        </FormItem>
+        <FormItem label="发布者：">
+          <p style="text-align: left">{{user.username}}</p>
+        </FormItem>
+        <FormItem label="任务类型：">
+          <Select v-model="type" style="width: 25%" :disabled="typeDisabled"
+                  :clearable="true" :filterable="true" @on-change="setTaskType">
+            <Option v-for="item in taskTypes"
+                    :value="item._id"
+                    :key="item._id">{{item.name}}</Option>
+          </Select>
+          <span style="color: grey; margin-left: 10px">
           若无您满意的类型，可<a @click="$router.push({name: 'aboutSite'})">联系我们</a>定制任务类型
         </span>
-        <p v-if="task.type" style="margin-left: 5px; margin-top: 5px;">{{task.type.description}}</p>
-      </FormItem>
-      <FormItem prop="tags" label="标签：">
-        <Tag
-          v-for="item in task.tags"
-          :key="item"
-          :name="item"
-          closable
-          @on-close="handleRemoveTag">
-          {{ item }}
-        </Tag>
-        <Input
-          v-model="tagInput"
-          @on-enter="handelTagInputKeyDown"
-          placeholder="按回车完成输入"
-          size="small"
-          style="width: 150px">
-        </Input>
-      </FormItem>
-      <FormItem label="截止日期：">
-          <DatePicker type="date" placeholder="选择日期" :options="datePickerOption" v-model="task.deadline"></DatePicker>
-        </Row>
-      </FormItem>
-      <FormItem prop="excerption" label="任务简介：">
-        <Input
-          v-model="task.excerption"
-          type="textarea"
-          placeholder="请输入任务简介，不超过140字"></Input>
-      </FormItem>
-      <FormItem prop="description" label="任务描述：">
-        <div class="description-editor">
+          <p v-if="task.type" style="margin-left: 5px; margin-top: 5px;">{{task.type.description}}</p>
+        </FormItem>
+        <FormItem prop="tags" label="标签：">
+          <Tag
+            v-for="item in task.tags"
+            :key="item"
+            :name="item"
+            closable
+            @on-close="handleRemoveTag">
+            {{ item }}
+          </Tag>
           <Input
-            class="description-input"
-            v-model="task.description"
-            type="textarea"
-            placeholder="请输入任务简介">
+            v-model="tagInput"
+            @on-enter="handelTagInputKeyDown"
+            placeholder="按回车完成输入"
+            size="small"
+            style="width: 150px">
           </Input>
-          <div class="description-preview" v-html="compiledDescription"></div>
-        </div>
-      </FormItem>
-    </Form>
-    <div class="submit-buttons">
-      <Button type="primary" @click="handleCreate">创建</Button>
+        </FormItem>
+        <FormItem label="截止日期：">
+          <DatePicker type="date" placeholder="选择日期" :options="datePickerOption" v-model="task.deadline"></DatePicker>
+          </Row>
+        </FormItem>
+        <FormItem prop="excerption" label="任务简介：">
+          <Input
+            v-model="task.excerption"
+            type="textarea"
+            placeholder="请输入任务简介，不超过140字"></Input>
+        </FormItem>
+        <FormItem prop="description" label="任务描述：">
+          <div class="description-editor">
+            <Input
+              class="description-input"
+              v-model="task.description"
+              type="textarea"
+              placeholder="请输入任务简介">
+            </Input>
+            <div class="description-preview" v-html="compiledDescription"></div>
+          </div>
+        </FormItem>
+      </Form>
+      <div class="submit-buttons">
+        <Button type="primary" @click="handleEdit">修改</Button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import User from '../../components/User.vue'
-  import TaskTypes from '../../components/taskTypes.vue'
+  import User from '../../../components/User.vue'
+  import TaskTypes from '../../../components/taskTypes.vue'
   import debounce from 'lodash/debounce.js'
   import marked from 'marked'
 
@@ -102,15 +105,7 @@
     mixins: [User, TaskTypes],
     data() {
       return {
-        task: {
-          title: '',
-          titlePicture: null,
-          type: '',
-          tags: [],
-          excerption: '',
-          description: '',
-          deadline: null,
-        },
+        task: {},
         ruleSubmit: {
           title: [
             { required: true, message: '标题不能为空', trigger: 'blur' },
@@ -146,16 +141,19 @@
         },
         imagePreviewURL: '',
         tagInput: '',
-//        tagsAutoComplete: [],
         taskDescription: '',
         datePickerOption: {
           disabledDate (date) {
             return date && date.valueOf() < Date.now();
           }
-        }
+        },
+        type: null
       }
     },
     computed: {
+      taskOld() {
+        return this.$store.state.task.tasks[this.$route.params.id];
+      },
       backgroundImageURL(){
         if(this.imagePreviewURL)
           return 'url("' + this.imagePreviewURL + '")';
@@ -166,7 +164,10 @@
       },
       taskTypes() {
         return this.$store.state.taskType.taskTypes;
-      }
+      },
+      typeDisabled() {
+        return !this.taskOld || !!this.taskOld.type;
+      },
     },
     watch: {
       'task.description': function () {
@@ -212,38 +213,32 @@
       updateDescription: debounce(function () {
         this.taskDescription = this.task.description;
       }, 500),
-      handleCreate() {
+      handleEdit() {
         this.$refs.form.validate((valid) => {
           if(valid) {
             this.$Modal.confirm({
               title: '确认',
-              content: !this.task.type ?
-                `<p>确认要创建您的任务吗？</p>
-                 <p style="color:red">您尚未选定任务类型，可在创建完成之后补充。</p>` :
-                `<p>确认要创建您的任务吗？</p>
-                 <p style="color:red">您已选定任务类型
-                    <b>${this.task.type.name}</b>，创建任务后将无法更改，确认选择该类型吗
-                 </p>`,
+              content: (this.task.type && !this.taskOld.type) ?
+                      ` <p>确认修改？</p>
+                        <p style="color:red">您已选定任务类型
+                        <b>${this.task.type.name}</b>，任务类型选定之后将无法更改，确认选择该类型吗？
+                        </p>` : `<p>确认修改？</p>`,
               onOk: () => {
                 let data = {};
+                data.id = this.$route.params.id;
                 data.name = this.task.title;
                 data.description = this.task.description;
                 data.excerption = this.task.excerption;
                 if(this.task.tags.length)
                   data.tags = this.task.tags;
-                if(this.task.type)
+                if(this.task.type && !this.taskOld.type)
                   data.type = this.task.type._id;
                 if(this.task.deadline)
                   data.deadline = this.task.deadline;
-                if(this.task.titlePicture)
-                  data.picture = this.task.titlePicture;
-                return this.$store.dispatch('task/create', data).then(() => {
-                  this.$Message.success({
-                    content: '创建成功',
-                    duration: 5
-                  });
-                  this.$router.push({name: 'myTasksManage'});
-                }).catch(err => {
+                return this.$store.dispatch('task/patch', data).then(() => {
+                    this.$Message.success('修改成功');
+                  }
+                ).catch(err => {
                   this.$Message.error(err.message);
                   console.error(err);
                 })
@@ -255,6 +250,27 @@
       setTaskType(value) {
         this.task.type = this.taskTypeById(value);
       },
+    },
+    mounted() {
+      if(this.taskOld) {
+        this.task.title = this.taskOld.name;
+        this.task.description = this.taskOld.description;
+        this.task.excerption = this.taskOld.excerption;
+        if (this.taskOld.tags)
+          this.task.tags = this.taskOld.tags.slice();
+        else
+          this.task.tags = [];
+        if (this.taskOld.type) {
+          this.task.type = this.taskTypeById(this.taskOld.type);
+          this.type = this.taskOld.type;
+        }
+        else
+          this.task.type = null;
+        if (this.taskOld.picture)
+          this.imagePreviewURL = this.taskOld.picture;
+        if (this.taskOld.deadline)
+          this.task.deadline = new Date(this.taskOld.deadline);
+      }
     },
   }
 </script>

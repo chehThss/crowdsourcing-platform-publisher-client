@@ -97,8 +97,12 @@
           </i-col>
           <i-col span="6" style="align-self: flex-end">
             <div style="text-align: right">
-              <Button type="primary">
-                <i class="fa fa-info" aria-hidden="true" style="margin-right: 4px"></i>详情
+              <Button v-if="item.status === 0" type="primary"
+                      @click="$router.push({name: 'taskEdit', params: {id: item._id}})">
+                <i class="fa fa-pencil" aria-hidden="true" style="margin-right: 4px"></i>编辑
+              </Button>
+              <Button v-if="item.status === 2" type="primary">
+                <i class="fa fa-pencil" aria-hidden="true" style="margin-right: 4px"></i>发布
               </Button>
               <Button type="error" @click="confirmDelete(item)">
                 <i class="fa fa-trash" aria-hidden="true" style="margin-right: 4px"></i>删除

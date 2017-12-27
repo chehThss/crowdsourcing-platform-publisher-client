@@ -43,17 +43,14 @@ const actions = {
       headers: {}
     };
     const jwt = window.localStorage.getItem('jwt');
-    const id = data.id, onUploadProgress = data.onUploadProgress;
-    delete data.id;
-    delete data.onUploadProgress;
     if (jwt)
       config.headers.Authorization = 'Bearer ' + jwt;
-    if (data.avatar) {
+    const id = data.id;
+    delete data.id;
+    if (data.picture) {
       config.headers['Content-Type'] = 'multipart/form-data';
       data = objectToFormData(data);
     }
-    if (onUploadProgress)
-      config.onUploadProgress = onUploadProgress;
     const response = await throwOnError(axios().patch('/api/task/' + id, data, config));
     commit('updateTask', response);
     return response;
