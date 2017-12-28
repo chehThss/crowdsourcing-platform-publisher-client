@@ -79,7 +79,7 @@
     <div>
       <Card v-for="(item, index) in populatedTaskList" v-if="item" :key="item._id">
         <Row style="display: flex">
-          <i-col span="18">
+          <i-col span="20">
             <h2>{{item.name}}</h2>
             <p>{{item.excerption}}</p>
             <div style="display: flex">
@@ -89,10 +89,29 @@
                      :key="index" @click.native="handleTagClick(tag)">{{tag}}</Tag>
                 <i v-if="item.tags.length === 0">无</i>
               </div>
-              <div style=" width: 40%;" class="task-info-date">
+              <div>{{getStatus(item.status)}}</div>
+            </div>
+            <div v-if="$store.state.user.users[item.publisher]" style="display: flex; height: 30px; align-items: center">
+              <img v-if="$store.state.user.users[item.publisher].avatarThumbnail64"
+                   :src="$store.state.user.users[item.publisher].avatarThumbnail64"
+                   style="width: 30px; border-radius: 5px;"/>
+              <img v-else :src="defaultAvatar" style="width: 30px; border-radius: 5px;"/>
+              <div style="display: inline-block; padding-left: 10px; width: 25%">
+                {{$store.state.user.users[item.publisher].username}}
+              </div>
+              <div style=" width: 40%; " class="task-info-date">
                 上次更新{{formatDate(item.updatedAt)}}
               </div>
-              <div>{{getStatus(item.status)}}</div>
+            </div>
+          </i-col>
+          <i-col span="4" style="align-self: flex-end">
+            <div style="text-align: right">
+              <Button v-if="item.status === 1" type="primary" @click="handlePass(item)">
+                通过
+              </Button>
+              <Button type="error" @click="confirmDelete(item)">
+                <i class="fa fa-trash" aria-hidden="true" style="margin-right: 4px"></i>删除
+              </Button>
             </div>
           </i-col>
         </Row>
@@ -220,6 +239,10 @@
                 this.fetchTasks();
             });
           }
+          for(let task of response.data){
+            if(!this.$store.state.user.users[task.publisher])
+              this.$store.dispatch('user/get', task.publisher);
+          }
         }).catch((err) => {
           this.$Message.error(err.message);
           console.error(err);
@@ -307,6 +330,14 @@
         if(!this.loading) {
           this.fetchTasks(true);
         }
+      },
+      handlePass(task) {
+        this.$store.dispatch('task/patch', {id: task._id, status: 'ADMITTED'}).then(() => {
+          this.$Message.success('操作成功');
+        }).catch((err) => {
+          this.$Message.error(err.message);
+          console.error(err);
+        })
       },
       confirmDelete(item) {
         this.$Modal.confirm({

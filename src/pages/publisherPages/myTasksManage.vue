@@ -1,3 +1,4 @@
+<script src="../../store/user.js"></script>
 <template>
   <div>
     <div style="border-bottom: solid 1px #dddddd">
@@ -79,7 +80,7 @@
     <div>
       <Card v-for="(item, index) in populatedTaskList" v-if="item" :key="item._id">
         <Row style="display: flex">
-          <i-col span="18">
+          <i-col span="20">
             <h2>{{item.name}}</h2>
             <p>{{item.excerption}}</p>
             <div style="display: flex">
@@ -95,14 +96,14 @@
               <div>{{getStatus(item.status)}}</div>
             </div>
           </i-col>
-          <i-col span="6" style="align-self: flex-end">
+          <i-col span="4" style="align-self: flex-end">
             <div style="text-align: right">
               <Button v-if="item.status === 0" type="primary"
                       @click="$router.push({name: 'taskEdit', params: {id: item._id}})">
                 <i class="fa fa-pencil" aria-hidden="true" style="margin-right: 4px"></i>编辑
               </Button>
-              <Button v-if="item.status === 2" type="primary">
-                <i class="fa fa-pencil" aria-hidden="true" style="margin-right: 4px"></i>发布
+              <Button v-if="item.status === 2" type="primary" @click="handlePublish(item)">
+                发布
               </Button>
               <Button type="error" @click="confirmDelete(item)">
                 <i class="fa fa-trash" aria-hidden="true" style="margin-right: 4px"></i>删除
@@ -337,6 +338,14 @@
           this.$Message.error(err.message);
           console.error(err);
         });
+      },
+      handlePublish(task) {
+        this.$store.dispatch('task/patch', {id: task._id, status: 'PUBLISHED'}).then(() => {
+          this.$Message.success('操作成功');
+        }).catch((err) => {
+          this.$Message.error(err.message);
+          console.error(err);
+        })
       },
       getStatus(status) {
         switch(status){
