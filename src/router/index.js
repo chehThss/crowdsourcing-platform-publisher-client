@@ -15,6 +15,7 @@ import MyTasksManage from '@/pages/publisherPages/myTasksManage'
 import TaskCreate from '@/pages/publisherPages/taskCreate'
 import MyTask from '@/pages/publisherPages/task/index'
 import TaskEdit from '@/pages/publisherPages/task/edit'
+import TaskContentEdit from '@/pages/publisherPages/task/editContent'
 import TaskAdminIndex from '@/pages/taskAdminPages/index'
 import TasksManage from '@/pages/taskAdminPages/tasksManage'
 import iView from 'iview'
@@ -108,6 +109,11 @@ let router = new Router({
               path: 'edit',
               name: 'taskEdit',
               component: TaskEdit
+            },
+            {
+              path: 'edit-content',
+              name: 'taskContentEdit',
+              component: TaskContentEdit
             }
           ]
         }

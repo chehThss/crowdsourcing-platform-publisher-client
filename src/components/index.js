@@ -3,6 +3,8 @@ import AppCopy from './AppCopy.vue'
 import ProfileCard from './ProfileCard.vue'
 import PersonalCenterMenu from './personalCenterMenu.vue'
 import CreateUserDialog from './createUserDialog.vue'
+import GuessNumberEdit from './GuessNumberEdit.vue'
+import InputInterger from './InputInterger.vue'
 
 export default {
   'app-header': AppHeader,
@@ -10,4 +12,6 @@ export default {
   'profile-card': ProfileCard,
   'personal-center-menu': PersonalCenterMenu,
   'create-user-dialog': CreateUserDialog,
+  'guess-number-edit': GuessNumberEdit,
+  'input-interger': InputInterger
 }

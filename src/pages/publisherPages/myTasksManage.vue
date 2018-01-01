@@ -1,4 +1,3 @@
-<script src="../../store/user.js"></script>
 <template>
   <div>
     <div style="border-bottom: solid 1px #dddddd">

@@ -1,3 +1,4 @@
+<script src="../../router/index.js"></script>
 <script src="../../store/task.js"></script>
 <template>
   <div>

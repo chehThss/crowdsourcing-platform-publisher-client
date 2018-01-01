@@ -8,7 +8,7 @@ const state = {
 
 const mutations = {
   updateTask(state, task) {
-    Vue.set(state.tasks, task._id, task);
+    Vue.set(state.tasks, task._id, Object.assign(state.tasks[task._id] || {}, task));
   },
   deleteTask(state, id) {
     Vue.delete(state.tasks, id)
@@ -84,6 +84,27 @@ const actions = {
     commit('updateTask', response);
     return response;
   },
+  async dataGet({commit}, id) {
+    const headers = {};
+    const jwt = window.localStorage.getItem('jwt');
+    headers.Authorization = 'Bearer ' + jwt;
+    const response = await throwOnError(axios().get('/api/task/' + id + '/data', {headers}));
+    commit('updateTask', Object.assign(response, {_id: id}));
+    return response;
+  },
+  async dataPost({commit}, data) {
+    const config = {
+      headers: {}
+    };
+    const jwt = window.localStorage.getItem('jwt');
+    if (jwt)
+      config.headers.Authorization = 'Bearer ' + jwt;
+    const id = data.id;
+    delete data.id;
+    return throwOnError(axios().post('/api/task/' + id + '/data', data, config)).then(() => {
+      commit('updateTask', Object.assign(data, {_id: id}));
+    });
+  }
 };
 
 export default {

@@ -1,12 +1,12 @@
 <template>
   <Row v-if="!loading">
     <i-col span="4">
-      <Menu theme="light" :active-name="menuName" @on-select="$router.push({name: name});"
+      <Menu theme="light" :active-name="menuName" @on-select="handleSelect"
             style="width: auto">
         <MenuItem name="taskEdit">
           基础信息
         </MenuItem>
-        <MenuItem v-if="editContentDisabled" name="contentEdit">
+        <MenuItem v-if="editContentDisabled" name="taskContentEdit">
           任务内容
         </MenuItem>
       </Menu>
@@ -22,7 +22,7 @@
     data() {
       return {
         loading: false,
-        menuName: 'taskEdit'
+        menuName: this.$route.name
       }
     },
     computed: {
@@ -42,6 +42,9 @@
       }).catch(err => this.$Message.error(err.message));
     },
     methods: {
+      handleSelect(value) {
+        this.$router.push({name: value});
+      }
     }
   }
 </script>
