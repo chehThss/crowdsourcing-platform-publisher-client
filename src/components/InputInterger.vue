@@ -1,6 +1,5 @@
 <script>
-  import InputNumber from 'iview/src/components/input-number'
-  // import InputNumber from 'iview/src'
+  import {InputNumber} from 'iview';
 
   export default {
     extends: InputNumber,

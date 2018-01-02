@@ -16,61 +16,61 @@
       </div>
       <Card :style="{display: filterBoxDisplay}">
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">任务状态：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">任务状态：</Col>
+          <Col span="20" class="search-filter-content">
             <RadioGroup v-model="status">
               <Radio label="">全部</Radio>
               <Radio v-for="item in statusMap"
                       :label="item.key"
                       :key="item.key">{{item.name}}</Radio>
             </RadioGroup>
-          </i-col>
+          </Col>
         </Row>
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">任务类型：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">任务类型：</Col>
+          <Col span="20" class="search-filter-content">
             <Select v-model="taskType" style="width: 40%" clearable>
               <Option v-for="item in taskTypes"
                       :value="item._id"
                       :key="item._id">{{item.name}}</Option>
             </Select>
-          </i-col>
+          </Col>
         </Row>
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">截止日期：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">截止日期：</Col>
+          <Col span="20" class="search-filter-content">
               <DatePicker type="date" placeholder="开始" v-model="deadlineFrom"
                           style="width: 200px; display: inline-block; margin-right: 5px" :options="fromOptions"></DatePicker>到
               <DatePicker type="date" placeholder="结束" v-model="deadlineTo"
                           style="width: 200px; display: inline-block" :options="toOptions"></DatePicker>
-          </i-col>
+          </Col>
         </Row>
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">编辑：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">编辑：</Col>
+          <Col span="20" class="search-filter-content">
             <RadioGroup v-model="valid">
               <Radio label="">全部</Radio>
               <Radio label="true">已完成</Radio>
               <Radio label="false">未完成</Radio>
             </RadioGroup>
-          </i-col>
+          </Col>
         </Row>
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">完成：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">完成：</Col>
+          <Col span="20" class="search-filter-content">
             <RadioGroup v-model="completed">
               <Radio label="">全部</Radio>
               <Radio label="true">已完成</Radio>
               <Radio label="false">未完成</Radio>
             </RadioGroup>
-          </i-col>
+          </Col>
         </Row>
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">标签：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">标签：</Col>
+          <Col span="20" class="search-filter-content">
             <Input v-model="tag" @on-enter="handleSearch" placeholder="输入回车发起搜索"
                    style="width: 200px; top: 0"></Input>
-          </i-col>
+          </Col>
         </Row>
       </Card>
     </div>
@@ -78,7 +78,7 @@
     <div>
       <Card v-for="(item, index) in populatedTaskList" v-if="item" :key="item._id">
         <Row style="display: flex">
-          <i-col span="20">
+          <Col span="20">
             <h2><router-link :to="{name: 'myTaskInfo', params: {id: item._id}}" class="task-title-link">
                 {{item.name}}
             </router-link></h2>
@@ -95,8 +95,8 @@
               </div>
               <div>{{getStatus(item.status)}}</div>
             </div>
-          </i-col>
-          <i-col span="4" style="align-self: flex-end">
+          </Col>
+          <Col span="4" style="align-self: flex-end">
             <div style="text-align: right">
               <Button v-if="item.status === 0" type="primary"
                       @click="$router.push({name: 'taskEdit', params: {id: item._id}})">
@@ -109,7 +109,7 @@
                 <i class="fa fa-trash" aria-hidden="true" style="margin-right: 4px"></i>删除
               </Button>
             </div>
-          </i-col>
+          </Col>
         </Row>
       </Card>
       <div @scroll="handleScroll" style="display: flex; justify-content: center;">

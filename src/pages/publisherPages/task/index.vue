@@ -1,6 +1,6 @@
 <template>
   <Row v-if="!loading && task">
-    <i-col span="4">
+    <Col span="4">
       <Menu theme="light" :active-name="menuName" @on-select="handleSelect"
             style="width: auto">
         <MenuItem name="myTaskInfo">
@@ -13,10 +13,10 @@
           编辑任务内容
         </MenuItem>
       </Menu>
-    </i-col>
-    <i-col span="20" style="padding-left: 20px">
+    </Col>
+    <Col span="20" style="padding-left: 20px">
       <router-view></router-view>
-    </i-col>
+    </Col>
   </Row>
 </template>
 

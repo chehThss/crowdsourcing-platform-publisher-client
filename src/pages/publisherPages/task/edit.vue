@@ -67,7 +67,6 @@
         </FormItem>
         <FormItem label="截止日期：">
           <DatePicker type="date" placeholder="选择日期" :options="datePickerOption" v-model="task.deadline"></DatePicker>
-          </Row>
         </FormItem>
         <FormItem prop="excerption" label="任务简介：">
           <Input

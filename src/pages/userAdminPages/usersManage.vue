@@ -18,8 +18,8 @@
       </div>
       <Card :style="{display: filterBoxDisplay}">
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">用户类型：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">用户类型：</Col>
+          <Col span="20" class="search-filter-content">
             <RadioGroup v-model="userRoleFilter">
               <Radio label="all">全部</Radio>
               <Radio label="SUBSCRIBER">订阅者</Radio>
@@ -28,17 +28,17 @@
               <Radio label="USER_ADMIN">用户管理员</Radio>
               <Radio label="SITE_ADMIN">网站管理员</Radio>
             </RadioGroup>
-          </i-col>
+          </Col>
         </Row>
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">封禁状态：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">封禁状态：</Col>
+          <Col span="20" class="search-filter-content">
             <RadioGroup v-model="userBlockFilter">
               <Radio label="all">全部</Radio>
               <Radio label="notBlocked">正常</Radio>
               <Radio label="blocked">封禁</Radio>
             </RadioGroup>
-          </i-col>
+          </Col>
         </Row>
       </Card>
     </div>

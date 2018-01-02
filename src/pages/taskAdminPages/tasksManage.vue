@@ -3,10 +3,10 @@
     <div style="border-bottom: solid 1px #dddddd">
       <div class="tasks-manage-search">
         <div style="display: flex">
-          <i-input v-model="textSearch" placeholder="搜索我的任务" @on-enter="handleSearch"
+          <Input v-model="textSearch" placeholder="搜索我的任务" @on-enter="handleSearch"
                  style="width: 400px; top: 0; padding-right: 5px">
             <Button slot="append" icon="ios-search" @click="handleSearch">搜索</Button>
-          </i-input>
+          </Input>
           <Button type="default" :icon="filterIcon" @click="isFilterCollapse = !isFilterCollapse">{{filterButtonText}}</Button>
         </div>
         <div>
@@ -16,61 +16,61 @@
       </div>
       <Card :style="{display: filterBoxDisplay}">
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">任务状态：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">任务状态：</Col>
+          <Col span="20" class="search-filter-content">
             <RadioGroup v-model="status">
               <Radio label="">全部</Radio>
               <Radio v-for="item in statusMap"
                       :label="item.key"
                       :key="item.key">{{item.name}}</Radio>
             </RadioGroup>
-          </i-col>
+          </Col>
         </Row>
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">任务类型：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">任务类型：</Col>
+          <Col span="20" class="search-filter-content">
             <Select v-model="taskType" style="width: 40%" clearable>
               <Option v-for="item in taskTypes"
                       :value="item._id"
                       :key="item._id">{{item.name}}</Option>
             </Select>
-          </i-col>
+          </Col>
         </Row>
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">截止日期：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">截止日期：</Col>
+          <Col span="20" class="search-filter-content">
               <DatePicker type="date" placeholder="开始" v-model="deadlineFrom"
                           style="width: 200px; display: inline-block; margin-right: 5px" :options="fromOptions"></DatePicker>到
               <DatePicker type="date" placeholder="结束" v-model="deadlineTo"
                           style="width: 200px; display: inline-block" :options="toOptions"></DatePicker>
-          </i-col>
+          </Col>
         </Row>
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">编辑：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">编辑：</Col>
+          <Col span="20" class="search-filter-content">
             <RadioGroup v-model="valid">
               <Radio label="">全部</Radio>
               <Radio label="true">已完成</Radio>
               <Radio label="false">未完成</Radio>
             </RadioGroup>
-          </i-col>
+          </Col>
         </Row>
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">完成：</i-col>
-          <i-col span="20" class="search-filter-content">
+          <Col span="3" class="search-filter-label">完成：</Col>
+          <Col span="20" class="search-filter-content">
             <RadioGroup v-model="completed">
               <Radio label="">全部</Radio>
               <Radio label="true">已完成</Radio>
               <Radio label="false">未完成</Radio>
             </RadioGroup>
-          </i-col>
+          </Col>
         </Row>
         <Row class="search-filter-row">
-          <i-col span="3" class="search-filter-label">标签：</i-col>
-          <i-col span="20" class="search-filter-content">
-            <i-input v-model="tag" @on-enter="handleSearch" placeholder="输入回车发起搜索"
-                   style="width: 200px; top: 0"></i-input>
-          </i-col>
+          <Col span="3" class="search-filter-label">标签：</Col>
+          <Col span="20" class="search-filter-content">
+            <Input v-model="tag" @on-enter="handleSearch" placeholder="输入回车发起搜索"
+                   style="width: 200px; top: 0"></Input>
+          </Col>
         </Row>
       </Card>
     </div>
@@ -78,7 +78,7 @@
     <div>
       <Card v-for="(item, index) in populatedTaskList" v-if="item" :key="item._id">
         <Row style="display: flex">
-          <i-col span="20">
+          <Col span="20">
             <h2><router-link :to="{name: 'taskManageInfo', params: {id: item._id}}" class="task-title-link">
               {{item.name}}
             </router-link></h2>
@@ -104,8 +104,8 @@
                 上次更新{{formatDate(item.updatedAt)}}
               </div>
             </div>
-          </i-col>
-          <i-col span="4" style="align-self: flex-end">
+          </Col>
+          <Col span="4" style="align-self: flex-end">
             <div style="text-align: right">
               <div class="submitted-buttons">
                 <Button v-if="item.status === 1" type="primary" @click="handlePass(item)">
@@ -119,7 +119,7 @@
                 <i class="fa fa-trash" aria-hidden="true" style="margin-right: 4px"></i>删除
               </Button>
             </div>
-          </i-col>
+          </Col>
         </Row>
       </Card>
       <div @scroll="handleScroll" style="display: flex; justify-content: center;">
