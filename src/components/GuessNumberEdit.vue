@@ -189,7 +189,6 @@
     mounted() {
       this.loading = true;
       this.$store.dispatch('task/dataGet', this.$route.params.id).then(data => {
-        console.log(this.task)
         this.guessNumber.min = this.task.min || 0;
         this.guessNumber.max = this.task.max || 1;
         this.guessNumber.total = this.task.total || Infinity;

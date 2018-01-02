@@ -82,7 +82,7 @@
             type="textarea"
             placeholder="请输入任务简介">
           </Input>
-          <div class="description-preview" v-html="compiledDescription"></div>
+          <div class="description-preview github-markdown markdown-body" v-html="compiledDescription"></div>
         </div>
       </FormItem>
     </Form>
@@ -237,12 +237,15 @@
                   data.deadline = this.task.deadline;
                 if(this.task.titlePicture)
                   data.picture = this.task.titlePicture;
-                return this.$store.dispatch('task/create', data).then(() => {
+                return this.$store.dispatch('task/create', data).then(response => {
                   this.$Message.success({
                     content: '创建成功',
                     duration: 5
                   });
-                  this.$router.push({name: 'myTasksManage'});
+                  if(this.task.type)
+                    this.$router.push({name: 'taskContentEdit', params: {id: response._id}});
+                  else
+                    this.$router.push({name: 'myTasksManage'});
                 }).catch(err => {
                   this.$Message.error(err.message);
                   console.error(err);
@@ -260,6 +263,8 @@
 </script>
 
 <style lang="less">
+  @import '../../assets/markdown/github-markdown';
+  @import '../../assets/markdown/markdown-normal-style';
   @picture-uploaded-width: 480px;
   @picture-uploaded-height: 240px;
 
@@ -334,7 +339,8 @@
     border-radius: 4px;
     overflow-y: auto;
     margin-left: 10px;
-    padding: 0 5px;
+    padding: 5px 5px;
+    background-color: #0000000a;
   }
 
   .submit-buttons {

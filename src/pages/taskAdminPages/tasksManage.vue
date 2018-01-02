@@ -3,10 +3,10 @@
     <div style="border-bottom: solid 1px #dddddd">
       <div class="tasks-manage-search">
         <div style="display: flex">
-          <Input v-model="textSearch" placeholder="搜索我的任务" @on-enter="handleSearch"
+          <i-input v-model="textSearch" placeholder="搜索我的任务" @on-enter="handleSearch"
                  style="width: 400px; top: 0; padding-right: 5px">
-          <Button slot="append" icon="ios-search" @click="handleSearch">搜索</Button>
-          </Input>
+            <Button slot="append" icon="ios-search" @click="handleSearch">搜索</Button>
+          </i-input>
           <Button type="default" :icon="filterIcon" @click="isFilterCollapse = !isFilterCollapse">{{filterButtonText}}</Button>
         </div>
         <div>
@@ -33,7 +33,6 @@
               <Option v-for="item in taskTypes"
                       :value="item._id"
                       :key="item._id">{{item.name}}</Option>
-              <!--<Option value="none">未指定</Option>-->
             </Select>
           </i-col>
         </Row>
@@ -69,8 +68,8 @@
         <Row class="search-filter-row">
           <i-col span="3" class="search-filter-label">标签：</i-col>
           <i-col span="20" class="search-filter-content">
-            <Input v-model="tag" @on-enter="handleSearch" placeholder="输入回车发起搜索"
-                   style="width: 200px; top: 0"></Input>
+            <i-input v-model="tag" @on-enter="handleSearch" placeholder="输入回车发起搜索"
+                   style="width: 200px; top: 0"></i-input>
           </i-col>
         </Row>
       </Card>
@@ -80,7 +79,9 @@
       <Card v-for="(item, index) in populatedTaskList" v-if="item" :key="item._id">
         <Row style="display: flex">
           <i-col span="20">
-            <h2>{{item.name}}</h2>
+            <h2><router-link :to="{name: 'taskManageInfo', params: {id: item._id}}" class="task-title-link">
+              {{item.name}}
+            </router-link></h2>
             <p>{{item.excerption}}</p>
             <div style="display: flex">
               <div style="height: 26px; width: 40%; overflow-x: hidden; overflow-y: hidden">
@@ -106,9 +107,14 @@
           </i-col>
           <i-col span="4" style="align-self: flex-end">
             <div style="text-align: right">
-              <Button v-if="item.status === 1" type="primary" @click="handlePass(item)">
-                通过
-              </Button>
+              <div class="submitted-buttons">
+                <Button v-if="item.status === 1" type="primary" @click="handlePass(item)">
+                  通过
+                </Button>
+                <Button v-if="item.status === 1" type="warning" @click="handleDeny(item)">
+                  拒绝
+                </Button>
+              </div>
               <Button type="error" @click="confirmDelete(item)">
                 <i class="fa fa-trash" aria-hidden="true" style="margin-right: 4px"></i>删除
               </Button>
@@ -132,7 +138,6 @@
   import User from '../../components/User.vue'
   import TaskTypes from '../../components/taskTypes.vue'
   import dateFormat from 'dateformat'
-  import taskType from "../../store/taskType";
   const FetchLimit = 8;
 
   export default {
@@ -205,7 +210,6 @@
         this.handleSearch();
       },
       completed() {
-        console.log(this.completed, this.completed === '')
         this.handleSearch();
       }
     },
@@ -339,6 +343,14 @@
           console.error(err);
         })
       },
+      handleDeny(task) {
+        this.$store.dispatch('task/patch', {id: task._id, status: 'EDITING'}).then(() => {
+          this.$Message.success('操作成功');
+        }).catch((err) => {
+          this.$Message.error(err.message);
+          console.error(err);
+        })
+      },
       confirmDelete(item) {
         this.$Modal.confirm({
           title: '确认删除任务',
@@ -424,5 +436,17 @@
   .task-info-date {
     font-size: 0.9em;
     color: #6d7380ba;
+  }
+
+  .submitted-buttons {
+    margin-bottom: 5px;
+  }
+
+  .task-title-link {
+    color: #202e40;
+  }
+
+  .task-title-link:hover {
+    color: #435569;
   }
 </style>

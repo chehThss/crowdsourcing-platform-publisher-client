@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="taskOld">
     <h1 style="margin: 20px">任务编辑</h1>
     <div>
       <Form ref="form"
@@ -50,8 +50,7 @@
           <p v-if="task.type" style="margin-left: 5px; margin-top: 5px;">{{task.type.description}}</p>
         </FormItem>
         <FormItem prop="tags" label="标签：">
-          <Tag
-            v-for="item in task.tags"
+          <Tag v-for="item in task.tags"
             :key="item"
             :name="item"
             closable
@@ -84,7 +83,7 @@
               type="textarea"
               placeholder="请输入任务简介">
             </Input>
-            <div class="description-preview" v-html="compiledDescription"></div>
+            <div class="description-preview github-markdown markdown-body" v-html="compiledDescription"></div>
           </div>
         </FormItem>
       </Form>
@@ -105,7 +104,15 @@
     mixins: [User, TaskTypes],
     data() {
       return {
-        task: {},
+        task: {
+          title: '',
+          titlePicture: null,
+          type: '',
+          tags: [],
+          excerption: '',
+          description: '',
+          deadline: null,
+        },
         ruleSubmit: {
           title: [
             { required: true, message: '标题不能为空', trigger: 'blur' },
@@ -160,7 +167,7 @@
         return '';
       },
       compiledDescription() {
-        return marked(this.taskDescription)
+        return marked(this.taskDescription);
       },
       taskTypes() {
         return this.$store.state.taskType.taskTypes;
@@ -210,7 +217,7 @@
           }
         }
       },
-      updateDescription: debounce(function () {
+      updateDescription: debounce(function() {
         this.taskDescription = this.task.description;
       }, 500),
       handleEdit() {
@@ -253,13 +260,10 @@
     },
     mounted() {
       if(this.taskOld) {
-        this.task.title = this.taskOld.name;
-        this.task.description = this.taskOld.description;
-        this.task.excerption = this.taskOld.excerption;
-        if (this.taskOld.tags)
-          this.task.tags = this.taskOld.tags.slice();
-        else
-          this.task.tags = [];
+        this.task.title = this.taskOld.name || '';
+        this.task.description = this.taskOld.description || '';
+        this.task.excerption = this.taskOld.excerption || '';
+        this.task.tags = this.taskOld.tags.slice() || [];
         if (this.taskOld.type) {
           this.task.type = this.taskTypeById(this.taskOld.type);
           this.type = this.taskOld.type;
@@ -276,6 +280,8 @@
 </script>
 
 <style lang="less">
+  @import '../../../assets/markdown/github-markdown';
+  @import '../../../assets/markdown/markdown-normal-style';
   @picture-uploaded-width: 480px;
   @picture-uploaded-height: 240px;
 
@@ -350,7 +356,8 @@
     border-radius: 4px;
     overflow-y: auto;
     margin-left: 10px;
-    padding: 0 5px;
+    padding: 5px 5px;
+    background-color: #0000000a;
   }
 
   .submit-buttons {

@@ -33,7 +33,6 @@
               <Option v-for="item in taskTypes"
                       :value="item._id"
                       :key="item._id">{{item.name}}</Option>
-              <!--<Option value="none">未指定</Option>-->
             </Select>
           </i-col>
         </Row>
@@ -80,7 +79,9 @@
       <Card v-for="(item, index) in populatedTaskList" v-if="item" :key="item._id">
         <Row style="display: flex">
           <i-col span="20">
-            <h2>{{item.name}}</h2>
+            <h2><router-link :to="{name: 'myTaskInfo', params: {id: item._id}}" class="task-title-link">
+                {{item.name}}
+            </router-link></h2>
             <p>{{item.excerption}}</p>
             <div style="display: flex">
               <div style="height: 26px; width: 40%; overflow-x: hidden; overflow-y: hidden">
@@ -127,7 +128,6 @@
   import User from '../../components/User.vue'
   import TaskTypes from '../../components/taskTypes.vue'
   import dateFormat from 'dateformat'
-  import taskType from "../../store/taskType";
   const FetchLimit = 8;
 
   export default {
@@ -200,7 +200,6 @@
         this.handleSearch();
       },
       completed() {
-        console.log(this.completed, this.completed === '')
         this.handleSearch();
       }
     },
@@ -415,5 +414,13 @@
   .task-info-date {
     font-size: 0.9em;
     color: #6d7380ba;
+  }
+
+  .task-title-link {
+    color: #202e40;
+  }
+
+  .task-title-link:hover {
+    color: #435569;
   }
 </style>

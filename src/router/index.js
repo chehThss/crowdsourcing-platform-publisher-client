@@ -16,8 +16,10 @@ import TaskCreate from '@/pages/publisherPages/taskCreate'
 import MyTask from '@/pages/publisherPages/task/index'
 import TaskEdit from '@/pages/publisherPages/task/edit'
 import TaskContentEdit from '@/pages/publisherPages/task/editContent'
+import TaskInfo from '@/pages/publisherPages/task/info'
 import TaskAdminIndex from '@/pages/taskAdminPages/index'
 import TasksManage from '@/pages/taskAdminPages/tasksManage'
+import TaskManageInfo from '@/pages/taskAdminPages/info'
 import iView from 'iview'
 import store from '../store'
 
@@ -98,12 +100,13 @@ let router = new Router({
           component: TaskCreate
         },
         {
-          path: 'task/:id',
+          path: ':id',
           component: MyTask,
           children: [
             {
               path: '',
-              redirect: {name: 'taskEdit'},
+              name: 'myTaskInfo',
+              component: TaskInfo,
             },
             {
               path: 'edit',
@@ -127,6 +130,11 @@ let router = new Router({
           path: 'manage',
           name: 'tasksManage',
           component: TasksManage
+        },
+        {
+          path: ':id',
+          name: 'taskManageInfo',
+          component: TaskManageInfo
         }
       ]
     }

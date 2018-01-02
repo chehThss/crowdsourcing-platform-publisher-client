@@ -1,13 +1,16 @@
 <template>
-  <Row v-if="!loading">
+  <Row v-if="!loading && task">
     <i-col span="4">
       <Menu theme="light" :active-name="menuName" @on-select="handleSelect"
             style="width: auto">
-        <MenuItem name="taskEdit">
+        <MenuItem name="myTaskInfo">
           基础信息
         </MenuItem>
-        <MenuItem v-if="editContentDisabled" name="taskContentEdit">
-          任务内容
+        <MenuItem v-if="task.status === 0" name="taskEdit">
+          编辑信息
+        </MenuItem>
+        <MenuItem v-if="task.status === 0 && editContentDisabled" name="taskContentEdit">
+          编辑任务内容
         </MenuItem>
       </Menu>
     </i-col>

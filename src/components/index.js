@@ -5,6 +5,7 @@ import PersonalCenterMenu from './personalCenterMenu.vue'
 import CreateUserDialog from './createUserDialog.vue'
 import GuessNumberEdit from './GuessNumberEdit.vue'
 import InputInterger from './InputInterger.vue'
+import TaskInfo from './TaskInfo.vue'
 
 export default {
   'app-header': AppHeader,
@@ -13,5 +14,6 @@ export default {
   'personal-center-menu': PersonalCenterMenu,
   'create-user-dialog': CreateUserDialog,
   'guess-number-edit': GuessNumberEdit,
-  'input-interger': InputInterger
+  'input-interger': InputInterger,
+  'task-info': TaskInfo
 }
