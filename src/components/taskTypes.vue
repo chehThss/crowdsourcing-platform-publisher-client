@@ -10,8 +10,5 @@
         return this.taskTypes.find(item => item._id === id);
       }
     },
-    mounted() {
-      // TODO: fetch task Types
-    }
   }
 </script>

@@ -90,7 +90,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @header-height: 60px;
 
   .app-header {
@@ -114,16 +114,11 @@
     height: @header-height;
     line-height: @header-height;
   }
+
   .header-content{
     max-width: 1024px;
     min-width: 750px;
     margin: auto;
-  }
-
-  .search-box{
-    height: @header-height;
-    line-height: @header-height;
-    padding-right: 10px;
   }
 
   .nav-user, .user-menu > div {
@@ -149,8 +144,5 @@
     height: @avatar-width;
     cursor: pointer;
     border-radius: 50%;
-  }
-
-  .user-icon{
   }
 </style>

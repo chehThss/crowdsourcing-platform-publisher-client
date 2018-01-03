@@ -1,17 +1,25 @@
 <template>
   <div>
-    <div style="border-bottom: solid 1px #dddddd">
+    <div class="search-filter-box">
       <div class="tasks-manage-search">
-        <div style="display: flex">
-          <Input v-model="textSearch" placeholder="搜索我的任务" @on-enter="handleSearch"
-                 style="width: 400px; top: 0; padding-right: 5px">
-          <Button slot="append" icon="ios-search" @click="handleSearch">搜索</Button>
+        <div class="search-box">
+          <Input v-model="textSearch"
+                 placeholder="搜索我的任务"
+                 @on-enter="handleSearch"
+                 class="search-input">
+          <Button slot="append"
+                  icon="ios-search"
+                  @click="handleSearch">搜索</Button>
           </Input>
-          <Button type="default" :icon="filterIcon" @click="isFilterCollapse = !isFilterCollapse">{{filterButtonText}}</Button>
+          <Button type="default"
+                  :icon="filterIcon"
+                  @click="isFilterCollapse = !isFilterCollapse">{{filterButtonText}}</Button>
         </div>
         <div>
           <Button icon="refresh" @click="refresh">刷新</Button>
-          <Button type="primary" icon="plus" @click="$router.push({name: 'taskCreate'})">新建任务</Button>
+          <Button type="primary"
+                  icon="plus"
+                  @click="$router.push({name: 'taskCreate'})">新建任务</Button>
         </div>
       </div>
       <Card :style="{display: filterBoxDisplay}">
@@ -29,7 +37,7 @@
         <Row class="search-filter-row">
           <Col span="3" class="search-filter-label">任务类型：</Col>
           <Col span="20" class="search-filter-content">
-            <Select v-model="taskType" style="width: 40%" clearable>
+            <Select v-model="taskType" class="type-select" clearable>
               <Option v-for="item in taskTypes"
                       :value="item._id"
                       :key="item._id">{{item.name}}</Option>
@@ -39,10 +47,16 @@
         <Row class="search-filter-row">
           <Col span="3" class="search-filter-label">截止日期：</Col>
           <Col span="20" class="search-filter-content">
-              <DatePicker type="date" placeholder="开始" v-model="deadlineFrom"
-                          style="width: 200px; display: inline-block; margin-right: 5px" :options="fromOptions"></DatePicker>到
-              <DatePicker type="date" placeholder="结束" v-model="deadlineTo"
-                          style="width: 200px; display: inline-block" :options="toOptions"></DatePicker>
+              <DatePicker class="date-picker"
+                          type="date"
+                          placeholder="开始"
+                          v-model="deadlineFrom"
+                          :options="fromOptions"></DatePicker>到
+              <DatePicker class="date-picker"
+                          type="date"
+                          placeholder="结束"
+                          v-model="deadlineTo"
+                          :options="toOptions"></DatePicker>
           </Col>
         </Row>
         <Row class="search-filter-row">
@@ -68,52 +82,56 @@
         <Row class="search-filter-row">
           <Col span="3" class="search-filter-label">标签：</Col>
           <Col span="20" class="search-filter-content">
-            <Input v-model="tag" @on-enter="handleSearch" placeholder="输入回车发起搜索"
-                   style="width: 200px; top: 0"></Input>
+            <Input v-model="tag"
+                   @on-enter="handleSearch"
+                   placeholder="输入回车发起搜索"
+                   class="tag-input"></Input>
           </Col>
         </Row>
       </Card>
     </div>
-    <p v-if="searchTotal !== null" style="margin: 8px; color: grey">共{{searchTotal}}条记录</p>
+    <p v-if="searchTotal !== null" class="count">共{{searchTotal}}条记录</p>
     <div>
       <Card v-for="(item, index) in populatedTaskList" v-if="item" :key="item._id">
-        <Row style="display: flex">
+        <Row type="flex">
           <Col span="20">
-            <h2><router-link :to="{name: 'myTaskInfo', params: {id: item._id}}" class="task-title-link">
+            <h2><router-link
+              :to="{name: 'myTaskInfo', params: {id: item._id}}"
+              class="task-title-link">
                 {{item.name}}
             </router-link></h2>
             <p>{{item.excerption}}</p>
-            <div style="display: flex">
-              <div style="height: 26px; width: 40%; overflow-x: hidden; overflow-y: hidden">
+            <div class="info-last-line">
+              <div class="tags">
                 <i>标签：</i>
                 <Tag v-if="item.tags.length > 0" v-for="(tag, index) in item.tags"
                      :key="index" @click.native="handleTagClick(tag)">{{tag}}</Tag>
                 <i v-if="item.tags.length === 0">无</i>
               </div>
-              <div style=" width: 40%;" class="task-info-date">
+              <div class="task-info-date">
                 上次更新{{formatDate(item.updatedAt)}}
               </div>
               <div>{{getStatus(item.status)}}</div>
             </div>
           </Col>
-          <Col span="4" style="align-self: flex-end">
-            <div style="text-align: right">
+          <Col span="4" class="buttons">
+            <div>
               <Button v-if="item.status === 0" type="primary"
                       @click="$router.push({name: 'taskEdit', params: {id: item._id}})">
-                <i class="fa fa-pencil" aria-hidden="true" style="margin-right: 4px"></i>编辑
+                <i class="fa fa-pencil button-icon" aria-hidden="true"></i>编辑
               </Button>
               <Button v-if="item.status === 2" type="primary" @click="handlePublish(item)">
                 发布
               </Button>
               <Button type="error" @click="confirmDelete(item)">
-                <i class="fa fa-trash" aria-hidden="true" style="margin-right: 4px"></i>删除
+                <i class="fa fa-trash button-icon" aria-hidden="true"></i>删除
               </Button>
             </div>
           </Col>
         </Row>
       </Card>
-      <div @scroll="handleScroll" style="display: flex; justify-content: center;">
-        <div v-if="!finished" ref="loader" style="padding-top: 20px">
+      <div @scroll="handleScroll" class="scroll">
+        <div v-if="!finished" ref="loader">
           <Spin>
             <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
             <div>加载中</div>
@@ -363,11 +381,31 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+  .search-filter-box {
+    border-bottom: solid 1px #dddddd;
+  }
+
   .tasks-manage-search {
     display: flex;
     justify-content: space-between;
     padding-bottom: 5px;
+  }
+
+  .search-box {
+    display: flex;
+  }
+
+  .search-input {
+    width: 400px;
+    top: 0;
+    padding-right: 5px;
+  }
+
+  .date-picker {
+    width: 200px;
+    display: inline-block;
+    margin-right: 5px;
   }
 
   .search-filter-row {
@@ -388,6 +426,20 @@
     padding-left: 10px;
   }
 
+  .type-select {
+    width: 40%;
+  }
+
+  .tag-input {
+    width: 200px;
+    top: 0;
+  }
+
+  .count {
+    margin: 8px;
+    color: grey;
+  }
+
   .demo-spin-icon-load{
     animation: ani-demo-spin 1s linear infinite;
   }
@@ -402,7 +454,19 @@
     padding-right: 5px;
   }
 
+  .info-last-line {
+    display: flex;
+  }
+
+  .tags {
+    height: 26px;
+    width: 40%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
   .task-info-date {
+    width: 40%;
     font-size: 0.9em;
     color: #6d7380ba;
   }
@@ -413,5 +477,22 @@
 
   .task-title-link:hover {
     color: #435569;
+  }
+
+  .buttons {
+    align-self: flex-end;
+    div {
+      text-align: right;
+    }
+  }
+
+  .button-icon {
+    margin-right: 4px
+  }
+
+  .scroll {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
   }
 </style>

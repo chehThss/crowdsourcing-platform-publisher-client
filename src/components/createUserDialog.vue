@@ -6,7 +6,9 @@
             ref="formValidate"
             :label-width="80">
         <FormItem :error="formRegister.username.error" label="用户名：">
-          <Input type="text" v-model="formRegister.username.content" placeholder=""></Input>
+          <Input type="text"
+                 v-model="formRegister.username.content"
+                 placeholder=""></Input>
         </FormItem>
         <FormItem :error="formRegister.password.error" label="密码：">
           <Input :type="passwordVisible ? 'text': 'password'"

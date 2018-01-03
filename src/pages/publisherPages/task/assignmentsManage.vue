@@ -1,13 +1,19 @@
 <template>
   <div>
-    <div style="border-bottom: solid 1px #dddddd">
+    <div class="search-filter-box">
       <div class="assignments-manage-search">
-        <div style="display: flex">
-          <Input v-model="textSearch" placeholder="搜索作业" @on-enter="handleSearch"
-                 style="width: 400px; top: 0; padding-right: 5px">
-          <Button slot="append" icon="ios-search" @click="handleSearch">搜索</Button>
+        <div class="search-box">
+          <Input v-model="textSearch"
+                 placeholder="搜索作业"
+                 @on-enter="handleSearch"
+                 class="search-input">
+          <Button slot="append"
+                  icon="ios-search"
+                  @click="handleSearch">搜索</Button>
           </Input>
-          <Button type="default" :icon="filterIcon" @click="isFilterCollapse = !isFilterCollapse">{{filterButtonText}}</Button>
+          <Button type="default"
+                  :icon="filterIcon"
+                  @click="isFilterCollapse = !isFilterCollapse">{{filterButtonText}}</Button>
         </div>
         <Button icon="refresh" @click="refresh">刷新</Button>
       </div>
@@ -25,9 +31,9 @@
         </Row>
       </Card>
     </div>
-    <p v-if="searchTotal !== null" style="margin: 8px; color: grey">共{{searchTotal}}条记录</p>
+    <p v-if="searchTotal !== null" class="count">共{{searchTotal}}条记录</p>
     <div>
-      <Card v-for="(item, index) in populatedAssignmentList" v-if="item" :key="item._id">
+      <Card v-for="(item, index) in populatedAssignmentList" :key="item._id">
         <Row type="flex" align="bottom">
           <Col span="18">
           <Row>
@@ -37,12 +43,12 @@
           </Row>
           <Row>
             <Col span="8">
-            <div v-if="$store.state.user.users[item.subscriber]" style="display: flex; height: 30px; align-items: center">
+            <div v-if="$store.state.user.users[item.subscriber]" class="subscriber-info">
               <img v-if="$store.state.user.users[item.subscriber].avatarThumbnail64"
                    :src="$store.state.user.users[item.subscriber].avatarThumbnail64"
-                   style="width: 30px; border-radius: 5px;"/>
-              <img v-else :src="defaultAvatar" style="width: 30px; border-radius: 5px;"/>
-              <div style="display: inline-block; padding-left: 10px; width: 25%">
+                   class="subscriber-avatar"/>
+              <img v-else :src="defaultAvatar" class="subscriber-avatar"/>
+              <div class="subscriber-username">
                 {{$store.state.user.users[item.subscriber].username}}
               </div>
             </div>
@@ -63,8 +69,8 @@
           </Col>
         </Row>
       </Card>
-      <div @scroll="handleScroll" style="display: flex; justify-content: center;">
-        <div v-if="!finished" ref="loader" style="padding-top: 20px">
+      <div class="scroll">
+        <div v-if="!finished" ref="loader">
           <Spin>
             <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
             <div>加载中</div>
@@ -271,11 +277,25 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+  .search-filter-box {
+    border-bottom: solid 1px #dddddd;
+  }
+
   .assignments-manage-search {
     display: flex;
     justify-content: space-between;
     padding-bottom: 5px;
+  }
+
+  .search-box {
+    display: flex;
+  }
+
+  .search-input {
+    width: 400px;
+    top: 0;
+    padding-right: 5px;
   }
 
   .search-filter-row {
@@ -296,18 +316,13 @@
     padding-left: 10px;
   }
 
+  .count {
+    margin: 8px;
+    color: grey;
+  }
+
   .demo-spin-icon-load{
     animation: ani-demo-spin 1s linear infinite;
-  }
-
-  .assignment-info-label, .assignment-info-text {
-    display: inline-block;
-  }
-
-  .assignment-info-label {
-    width: 100px;
-    text-align: right;
-    padding-right: 5px;
   }
 
   .assignment-info-date {
@@ -315,16 +330,31 @@
     color: #6d7380ba;
   }
 
+  .subscriber-info {
+    display: flex;
+    height: 30px;
+    align-items: center;
+  }
+
+  .subscriber-avatar {
+    width: 30px;
+    border-radius: 5px;
+  }
+
+  .subscriber-username {
+    display: inline-block;
+    padding-left: 10px;
+    width: 25%;
+  }
+
   .assignment-info-status, .assignment-info-date {
     height: 30px;
     line-height: 30px;
   }
 
-  .assignment-title-link {
-    color: #202e40;
-  }
-
-  .assignment-title-link:hover {
-    color: #435569;
+  .scroll {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
   }
 </style>

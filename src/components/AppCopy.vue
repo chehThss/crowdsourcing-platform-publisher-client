@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style lang="less">
+<style lang="less" scoped>
   .layout-copy{
     text-align: center;
     padding: 10px 0 20px;

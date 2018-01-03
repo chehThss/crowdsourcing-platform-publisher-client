@@ -1,5 +1,8 @@
 <template>
-  <Menu class="personal-center-menu" theme="light" :active-name="currentSetting" @on-select="handleSelect">
+  <Menu class="personal-center-menu"
+        theme="light"
+        :active-name="currentSetting"
+        @on-select="handleSelect">
     <MenuGroup title="个人中心">
       <MenuItem name="profileSettings">
         <Icon type="information"></Icon>

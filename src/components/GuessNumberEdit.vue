@@ -64,7 +64,6 @@
 </template>
 
 <script>
-
   export default {
     data() {
       return {
@@ -204,7 +203,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .task-title {
     margin: 20px;
   }

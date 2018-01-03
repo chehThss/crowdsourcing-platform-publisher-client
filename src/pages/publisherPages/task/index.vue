@@ -1,15 +1,18 @@
 <template>
   <Row v-if="!loading && task">
     <Col span="4">
-      <Menu theme="light" :active-name="menuName" @on-select="handleSelect"
-            style="width: auto">
+      <Menu theme="light"
+            :active-name="menuName"
+            @on-select="handleSelect"
+            class="menu">
         <MenuItem name="myTaskInfo">
           基础信息
         </MenuItem>
         <MenuItem v-if="task.status === 0" name="taskEdit">
           编辑信息
         </MenuItem>
-        <MenuItem v-if="task.status === 0 && editContentDisabled" name="taskContentEdit">
+        <MenuItem v-if="task.status === 0 && editContentDisabled"
+                  name="taskContentEdit">
           编辑任务内容
         </MenuItem>
         <MenuItem v-if="task.status === 3" name="assignmentsManage">
@@ -17,7 +20,7 @@
         </MenuItem>
       </Menu>
     </Col>
-    <Col span="20" style="padding-left: 20px">
+    <Col span="20" class="router-view">
       <router-view></router-view>
     </Col>
   </Row>
@@ -54,3 +57,13 @@
     }
   }
 </script>
+
+<style lang="less" scoped>
+  .menu {
+    width: auto !important;
+  }
+
+  .router-view {
+    padding-left: 20px;
+  }
+</style>

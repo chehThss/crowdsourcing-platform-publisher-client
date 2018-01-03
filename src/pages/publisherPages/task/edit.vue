@@ -1,6 +1,6 @@
 <template>
   <div v-if="taskOld">
-    <h1 style="margin: 20px">任务编辑</h1>
+    <h1 class="head">任务编辑</h1>
     <div>
       <Form ref="form"
             :model="task"
@@ -35,19 +35,23 @@
           </div>
         </FormItem>
         <FormItem label="发布者：">
-          <p style="text-align: left">{{user.username}}</p>
+          <p>{{user.username}}</p>
         </FormItem>
         <FormItem label="任务类型：">
-          <Select v-model="type" style="width: 25%" :disabled="typeDisabled"
-                  :clearable="true" :filterable="true" @on-change="setTaskType">
+          <Select class="type"
+                  v-model="type"
+                  :disabled="typeDisabled"
+                  :clearable="true"
+                  :filterable="true"
+                  @on-change="setTaskType">
             <Option v-for="item in taskTypes"
                     :value="item._id"
                     :key="item._id">{{item.name}}</Option>
           </Select>
-          <span style="color: grey; margin-left: 10px">
+          <span class="type-more">
           若无您满意的类型，可<a @click="$router.push({name: 'aboutSite'})">联系我们</a>定制任务类型
         </span>
-          <p v-if="task.type" style="margin-left: 5px; margin-top: 5px;">{{task.type.description}}</p>
+          <p v-if="task.type" class="type-description">{{task.type.description}}</p>
         </FormItem>
         <FormItem prop="tags" label="标签：">
           <Tag v-for="item in task.tags"
@@ -62,11 +66,14 @@
             @on-enter="handelTagInputKeyDown"
             placeholder="按回车完成输入"
             size="small"
-            style="width: 150px">
+            class="tag-input">
           </Input>
         </FormItem>
         <FormItem label="截止日期：">
-          <DatePicker type="date" placeholder="选择日期" :options="datePickerOption" v-model="task.deadline"></DatePicker>
+          <DatePicker type="date"
+                      placeholder="选择日期"
+                      :options="datePickerOption"
+                      v-model="task.deadline"></DatePicker>
         </FormItem>
         <FormItem prop="excerption" label="任务简介：">
           <Input
@@ -82,7 +89,8 @@
               type="textarea"
               placeholder="请输入任务简介">
             </Input>
-            <div class="description-preview github-markdown markdown-body" v-html="compiledDescription"></div>
+            <div class="description-preview github-markdown markdown-body"
+                 v-html="compiledDescription"></div>
           </div>
         </FormItem>
       </Form>
@@ -281,12 +289,19 @@
 <style lang="less">
   @import '../../../assets/markdown/github-markdown';
   @import '../../../assets/markdown/markdown-normal-style';
+
+  // Fuck css, fuck iview
+  .description-input > textarea {
+    height: 100% !important;
+  }
+</style>
+
+<style lang="less" scoped>
   @picture-uploaded-width: 480px;
   @picture-uploaded-height: 240px;
 
-  .publish-progress {
-    padding-top: 20px;
-    padding-bottom: 20px;
+  .head {
+    margin: 20px;
   }
 
   .picture-upload-container {
@@ -335,6 +350,24 @@
     cursor: pointer;
   }
 
+  .type {
+    width: 25%;
+  }
+
+  .type-description {
+     margin-left: 5px;
+     margin-top: 5px;
+  }
+
+  .type-more {
+     color: grey;
+     margin-left: 10px;
+  }
+
+  .tag-input {
+    width: 150px;
+  }
+
   @description-editor-height: 300px;
   .description-editor {
     display: flex;
@@ -346,9 +379,6 @@
     vertical-align: top;
   }
 
-  .description-input textarea {
-    height: 100%;
-  }
 
   .description-preview {
     border: solid 1px #dddee1;

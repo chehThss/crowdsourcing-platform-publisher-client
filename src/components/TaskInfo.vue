@@ -8,7 +8,8 @@
       <Tag v-for="(tag, index) in task.tags" :key="index">{{tag}}</Tag>
     </div>
     <p class="task-excerption">{{task.excerption}}</p>
-    <div class="task-description github-markdown markdown-body" v-html="compiledDescription"></div>
+    <div class="task-description github-markdown markdown-body"
+         v-html="compiledDescription"></div>
   </div>
 </template>
 
@@ -69,6 +70,9 @@
 <style lang="less">
   @import '../assets/markdown/github-markdown';
   @import '../assets/markdown/markdown-normal-style';
+</style>
+
+<style lang="less" scoped>
   @picture-width: 600px;
   @picture-height: 300px;
 
