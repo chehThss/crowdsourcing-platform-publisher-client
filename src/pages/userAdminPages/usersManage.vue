@@ -1,19 +1,25 @@
-<script src="../../router/index.js"></script>
-<script src="../../store/task.js"></script>
 <template>
   <div>
-    <div style="border-bottom: solid 1px #dddddd">
+    <div class="search-filter-box">
       <div class="users-manage-search">
-        <div style="display: flex">
-          <Input v-model="textSearch" placeholder="请输入要查找的用户名或邮箱" @on-enter="handleSearch"
-                 style="width: 400px; top: 0; padding-right: 5px">
-          <Button slot="append" icon="ios-search" @click="handleSearch">搜索</Button>
+        <div class="search-box">
+          <Input v-model="textSearch"
+                 placeholder="请输入要查找的用户名或邮箱"
+                 @on-enter="handleSearch"
+                 class="search-input">
+          <Button slot="append"
+                  icon="ios-search"
+                  @click="handleSearch">搜索</Button>
           </Input>
-          <Button type="default" :icon="filterIcon" @click="isFilterCollapse = !isFilterCollapse">{{filterButtonText}}</Button>
+          <Button type="default"
+                  :icon="filterIcon"
+                  @click="isFilterCollapse = !isFilterCollapse">{{filterButtonText}}</Button>
         </div>
         <div>
           <Button icon="refresh" @click="refresh">刷新</Button>
-          <Button type="primary" icon="plus" @click="handleAddUser">添加</Button>
+          <Button type="primary"
+                  icon="plus"
+                  @click="handleAddUser">添加</Button>
         </div>
       </div>
       <Card :style="{display: filterBoxDisplay}">
@@ -42,13 +48,15 @@
         </Row>
       </Card>
     </div>
-    <p v-if="searchTotal !== null" style="margin: 8px; color: grey">共{{searchTotal}}条记录</p>
+    <p v-if="searchTotal !== null" class="count">共{{searchTotal}}条记录</p>
     <div>
-      <Card v-for="(item, index) in populatedUserList" v-if="item" :key="item._id">
-        <div style="display: flex; align-items: center">
-          <img v-if="item.avatarThumbnail64" style="width: 64px; height: 64px; border-radius: 32px;" :src="item.avatarThumbnail64"/>
-          <img v-else style="width: 64px; height: 64px; border-radius: 32px;" :src="defaultAvatar"/>
-          <div style="padding-left: 20px">
+      <Card v-for="(item, index) in populatedUserList" :key="item._id">
+        <div class="info-box">
+          <img class="avatar"
+               v-if="item.avatarThumbnail64"
+               :src="item.avatarThumbnail64"/>
+          <img v-else class="avatar" :src="defaultAvatar"/>
+          <div>
             <div>
               <div class="user-info-label">用户名：</div>
               <div class="user-info-text">{{item.username}}</div>
@@ -84,21 +92,21 @@
               </div>
             </div>
           </div>
-          <div style="align-self: flex-end; flex: 1; text-align: right">
+          <div class="buttons">
             <Button v-if="!item.blocked" @click="handleBlock(item, true)"  type="warning">
-              <i class="fa fa-ban" aria-hidden="true" style="margin-right: 4px"></i>禁用
+              <i class="fa fa-ban button-icon" aria-hidden="true"></i>禁用
             </Button>
             <Button v-else @click="handleBlock(item, false)" type="success">
-              <i class="fa fa-circle-o" aria-hidden="true" style="margin-right: 4px"></i>解禁
+              <i class="fa fa-circle-o button-icon" aria-hidden="true"></i>解禁
             </Button>
             <Button type="error" @click="confirmDelete(item)">
-              <i class="fa fa-trash" aria-hidden="true" style="margin-right: 4px"></i>删除
+              <i class="fa fa-trash button-icon" aria-hidden="true"></i>删除
             </Button>
           </div>
         </div>
       </Card>
-      <div @scroll="handleScroll" style="display: flex; justify-content: center;">
-        <div v-if="!finished" ref="loader" style="padding-top: 20px">
+      <div class="scroll">
+        <div v-if="!finished" ref="loader">
           <Spin>
             <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
             <div>加载中</div>
@@ -299,11 +307,25 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+  .search-filter-box {
+    border-bottom: solid 1px #dddddd;
+  }
+
   .users-manage-search {
     display: flex;
     justify-content: space-between;
     padding-bottom: 5px;
+  }
+
+  .search-box {
+    display: flex;
+  }
+
+  .search-input {
+    width: 400px;
+    top: 0;
+    padding-right: 5px;
   }
 
   .search-filter-row {
@@ -320,8 +342,24 @@
     padding-left: 10px;
   }
 
+  .count {
+    margin: 8px;
+    color: grey;
+  }
+
   .demo-spin-icon-load{
     animation: ani-demo-spin 1s linear infinite;
+  }
+
+  .info-box {
+    display: flex;
+    align-items: center;
+  }
+
+  .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
   }
 
   .user-info-label, .user-info-text {
@@ -337,5 +375,25 @@
   .user-info-date {
     font-size: 0.9em;
     color: #6d7380ba;
+  }
+
+  .buttons {
+    align-self: flex-end;
+    flex: 1;
+    text-align: right;
+  }
+
+  .button-icon {
+    margin-right: 4px
+  }
+
+  .scroll {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+  }
+
+  .submitted-buttons {
+    margin-bottom: 5px;
   }
 </style>

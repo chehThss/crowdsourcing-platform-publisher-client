@@ -1,25 +1,34 @@
 <template>
   <div class="home-body">
     <div class="login-card-container" v-if="!user">
-      <h2 style="text-align: center; margin-bottom: 20px">登录</h2>
+      <h2 class="login-title">登录</h2>
       <div class="login-card">
         <Form ref="formValidate">
           <FormItem :error="usernameError">
             <p>用户名或邮箱</p>
-            <Input ref="usernameInput" type="text" v-model="username" placeholder=""></Input>
+            <Input ref="usernameInput"
+                   type="text"
+                   v-model="username"
+                   placeholder=""></Input>
           </FormItem>
           <FormItem :error="passwordError">
             <p>密码</p>
-            <Input ref="passwordInput" type="password" v-model="password" placeholder="" @on-enter="handleLogin"></Input>
+            <Input ref="passwordInput"
+                   type="password"
+                   v-model="password"
+                   placeholder=""
+                   @on-enter="handleLogin"></Input>
           </FormItem>
         </Form>
-        <div style="position: relative; top: -5px;">
+        <div class="register">
           <a @click="handleRegister">注册账号</a>
-          <a style="position: absolute; right: 0;"
+          <a class="forget-pass"
              @click="handleForgetPassword">忘记密码</a>
         </div>
         <div>
-          <Button type="primary" @click="handleLogin" style="width: 100%">登录</Button>
+          <Button type="primary"
+                  @click="handleLogin"
+                  class="login-button">登录</Button>
         </div>
       </div>
     </div>
@@ -94,17 +103,37 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .login-card-container {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
   }
+
   .login-card {
     width: 340px;
     border-radius: 20px;
     border: solid 1px #d3d3d3;
     padding: 20px;
+  }
+
+  .login-title {
+     text-align: center;
+     margin-bottom: 20px;
+  }
+
+  .register {
+     position: relative;
+     top: -5px;
+  }
+
+  .forget-pass {
+    position: absolute;
+    right: 0;
+  }
+
+  .login-button {
+    width: 100%;
   }
 </style>

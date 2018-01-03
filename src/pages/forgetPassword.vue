@@ -5,6 +5,7 @@
       <FormItem :error="emailError" label="邮箱：">
         <Input type="text" v-model="email" @on-enter="handleSubmit" autofocus></Input>
       </FormItem>
+      <!-- Just to fix a bug that enter will make the web refresh -->
       <FormItem style="display: none">
         <Input type="text" @on-enter="handleSubmit"></Input>
       </FormItem>
@@ -76,7 +77,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .forget-password-form {
     width: 400px;
     margin-top: 20px;

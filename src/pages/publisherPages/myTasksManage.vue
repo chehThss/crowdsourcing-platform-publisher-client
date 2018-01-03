@@ -37,7 +37,9 @@
         <Row class="search-filter-row">
           <Col span="3" class="search-filter-label">任务类型：</Col>
           <Col span="20" class="search-filter-content">
-            <Select v-model="taskType" class="type-select" clearable>
+            <Select v-model="taskType"
+                    class="type-select"
+                    clearable>
               <Option v-for="item in taskTypes"
                       :value="item._id"
                       :key="item._id">{{item.name}}</Option>
@@ -47,16 +49,16 @@
         <Row class="search-filter-row">
           <Col span="3" class="search-filter-label">截止日期：</Col>
           <Col span="20" class="search-filter-content">
-              <DatePicker class="date-picker"
-                          type="date"
-                          placeholder="开始"
-                          v-model="deadlineFrom"
-                          :options="fromOptions"></DatePicker>到
-              <DatePicker class="date-picker"
-                          type="date"
-                          placeholder="结束"
-                          v-model="deadlineTo"
-                          :options="toOptions"></DatePicker>
+          <DatePicker class="date-picker"
+                      type="date"
+                      placeholder="开始"
+                      v-model="deadlineFrom"
+                      :options="fromOptions"></DatePicker>到
+          <DatePicker class="date-picker"
+                      type="date"
+                      placeholder="结束"
+                      v-model="deadlineTo"
+                      :options="toOptions"></DatePicker>
           </Col>
         </Row>
         <Row class="search-filter-row">
@@ -481,7 +483,7 @@
 
   .buttons {
     align-self: flex-end;
-    div {
+    > div {
       text-align: right;
     }
   }

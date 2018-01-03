@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 style="padding-bottom: 20px">重置密码</h1>
-    <Form :label-width="80" style="width: 400px">
+    <h1 class="title">重置密码</h1>
+    <Form :label-width="80" class="form">
       <FormItem label="新密码：" :error="passwordForm.newPassword.error">
         <Input type="password" v-model="passwordForm.newPassword.content" autofocus></Input>
       </FormItem>
@@ -108,3 +108,13 @@
     }
   }
 </script>
+
+<style lang="less" scoped>
+  .title {
+    margin-bottom: 20px;
+  }
+
+  .form {
+    width: 400px;
+  }
+</style>

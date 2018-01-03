@@ -32,10 +32,9 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .personal-center-menu {
     border: solid 1px #dddee1;
     width: auto !important;
-    /*border-radius: 20px;*/
   }
 </style>

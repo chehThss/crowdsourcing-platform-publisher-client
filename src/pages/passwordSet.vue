@@ -1,15 +1,22 @@
 <template>
   <div>
-    <h1 style="margin-bottom: 10px">修改密码</h1>
-    <Form :label-width="80" style="width: 400px">
-      <FormItem label="原密码：" :error="passwordForm.oldPassword.error">
-        <Input type="password" v-model="passwordForm.oldPassword.content" autofocus></Input>
+    <h1 class="title">修改密码</h1>
+    <Form :label-width="80" class="form">
+      <FormItem label="原密码："
+                :error="passwordForm.oldPassword.error">
+        <Input type="password"
+               v-model="passwordForm.oldPassword.content"
+               autofocus></Input>
       </FormItem>
-      <FormItem label="新密码：" :error="passwordForm.newPassword.error">
-        <Input type="password" v-model="passwordForm.newPassword.content"></Input>
+      <FormItem label="新密码："
+                :error="passwordForm.newPassword.error">
+        <Input type="password"
+               v-model="passwordForm.newPassword.content"></Input>
       </FormItem>
-      <FormItem label="确认密码：" :error="passwordForm.passwordCheck.error">
-         <Input type="password" v-model="passwordForm.passwordCheck.content"></Input>
+      <FormItem label="确认密码："
+                :error="passwordForm.passwordCheck.error">
+         <Input type="password"
+                v-model="passwordForm.passwordCheck.content"></Input>
       </FormItem>
     </Form>
     <div>
@@ -150,3 +157,13 @@
     }
   }
 </script>
+
+<style lang="less" scoped>
+  .title {
+    margin-bottom: 10px;
+  }
+
+  .form {
+    width: 400px;
+  }
+</style>

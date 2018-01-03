@@ -23,6 +23,10 @@
             <Icon type="ios-people-outline"></Icon>
             管理用户
           </MenuItem>
+          <MenuItem name="aboutSite">
+            <Icon type="ios-information-outline"></Icon>
+            关于
+          </MenuItem>
         </Menu>
         </Col>
         <Col span="6" class="nav-user">
