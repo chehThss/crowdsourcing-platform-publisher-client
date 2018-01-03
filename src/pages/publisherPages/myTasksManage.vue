@@ -346,16 +346,7 @@
         })
       },
       getStatus(status) {
-        switch(status){
-          case 0:
-            return '编辑中';
-          case 1:
-            return '审核中';
-          case 2:
-            return '待发布';
-          case 3:
-            return '已发布';
-        }
+        return this.statusMap.find(item => Number(item.key) === status).name;
       },
       handleTagClick(tag) {
         this.tag = tag;

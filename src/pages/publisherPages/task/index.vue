@@ -12,6 +12,9 @@
         <MenuItem v-if="task.status === 0 && editContentDisabled" name="taskContentEdit">
           编辑任务内容
         </MenuItem>
+        <MenuItem v-if="task.status === 3" name="assignmentsManage">
+          管理作业
+        </MenuItem>
       </Menu>
     </Col>
     <Col span="20" style="padding-left: 20px">

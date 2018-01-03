@@ -6,6 +6,7 @@ import auth from './auth';
 import user from './user';
 import task from './task';
 import taskType from './taskType'
+import assignment from './assignment'
 
 Vue.use(Vuex);
 
@@ -16,7 +17,8 @@ const store = new Vuex.Store({
     auth,
     user,
     task,
-    taskType
+    taskType,
+    assignment,
   }
 });
 

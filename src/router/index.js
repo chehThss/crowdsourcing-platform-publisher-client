@@ -17,6 +17,7 @@ import MyTask from '@/pages/publisherPages/task/index'
 import TaskEdit from '@/pages/publisherPages/task/edit'
 import TaskContentEdit from '@/pages/publisherPages/task/editContent'
 import TaskInfo from '@/pages/publisherPages/task/info'
+import AssignmentsManage from '@/pages/publisherPages/task/assignmentsManage'
 import TaskAdminIndex from '@/pages/taskAdminPages/index'
 import TasksManage from '@/pages/taskAdminPages/tasksManage'
 import TaskManageInfo from '@/pages/taskAdminPages/info'
@@ -117,6 +118,11 @@ let router = new Router({
               path: 'edit-content',
               name: 'taskContentEdit',
               component: TaskContentEdit
+            },
+            {
+              path: 'assignment',
+              name: 'assignmentsManage',
+              component: AssignmentsManage
             }
           ]
         }
