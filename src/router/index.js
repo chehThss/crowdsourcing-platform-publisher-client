@@ -21,6 +21,7 @@ import AssignmentsManage from '@/pages/publisherPages/task/assignmentsManage'
 import TaskAdminIndex from '@/pages/taskAdminPages/index'
 import TasksManage from '@/pages/taskAdminPages/tasksManage'
 import TaskManageInfo from '@/pages/taskAdminPages/info'
+import NotFound from '@/pages/notFound'
 import iView from 'iview'
 import store from '../store'
 
@@ -143,6 +144,11 @@ let router = new Router({
           component: TaskManageInfo
         }
       ]
+    },
+    {
+      path: '*',
+      name: 'notFound',
+      component: NotFound
     }
   ]
 });
