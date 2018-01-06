@@ -17,9 +17,6 @@
         </div>
         <div>
           <Button icon="refresh" @click="refresh">刷新</Button>
-          <Button type="primary"
-                  icon="plus"
-                  @click="$router.push({name: 'taskCreate'})">新建任务</Button>
         </div>
       </div>
       <Card :style="{display: filterBoxDisplay}">
@@ -156,7 +153,7 @@
 
 <script>
   import User from '../../components/User.vue'
-  import TaskTypes from '../../components/taskTypes.vue'
+  import TaskTypes from '../../components/TaskTypes.vue'
   import dateFormat from 'dateformat'
   const FetchLimit = 8;
 
@@ -497,6 +494,7 @@
 
   .task-title-link {
     color: #202e40;
+    border-bottom: solid 1px #000000a8;
   }
 
   .task-title-link:hover {

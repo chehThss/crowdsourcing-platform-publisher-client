@@ -100,7 +100,7 @@
             <h2><router-link
               :to="{name: 'myTaskInfo', params: {id: item._id}}"
               class="task-title-link">
-                {{item.name}}
+              {{item.name}}
             </router-link></h2>
             <p>{{item.excerption}}</p>
             <div class="info-last-line">
@@ -146,7 +146,7 @@
 
 <script>
   import User from '../../components/User.vue'
-  import TaskTypes from '../../components/taskTypes.vue'
+  import TaskTypes from '../../components/TaskTypes.vue'
   import dateFormat from 'dateformat'
   const FetchLimit = 8;
 
@@ -475,6 +475,7 @@
 
   .task-title-link {
     color: #202e40;
+    border-bottom: solid 1px #000000a8;
   }
 
   .task-title-link:hover {

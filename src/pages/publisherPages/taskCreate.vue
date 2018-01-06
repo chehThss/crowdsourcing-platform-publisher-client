@@ -100,7 +100,7 @@
 
 <script>
   import User from '../../components/User.vue'
-  import TaskTypes from '../../components/taskTypes.vue'
+  import TaskTypes from '../../components/TaskTypes.vue'
   import debounce from 'lodash/debounce.js'
   import marked from 'marked'
 

@@ -53,8 +53,12 @@
         if(this.user){
           if(this.user.roles.indexOf('PUBLISHER') !== -1)
             return 'myTasksManage';
+          else if(this.user.roles.indexOf('TASK_ADMIN') !== -1)
+            return 'tasksManage';
+          else if(this.user.roles.indexOf('USER_ADMIN') !== -1)
+            return 'usersManage';
           else
-            return 'home';
+            return 'aboutSite';
         }
         return '';
       }
